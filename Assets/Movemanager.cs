@@ -1,5 +1,6 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
+using Unity.Mathematics;
 using Unity.VisualScripting;
 using UnityEditor.Tilemaps;
 using UnityEngine;
@@ -18,13 +19,16 @@ public class Movemanager : MonoBehaviour
     public LayerMask ground;
     bool doublejump;
 
-   
-   
+    SpriteRenderer spriteRenderer;
+
+
+
 
     private void Start()
     {
         rb = GetComponent<Rigidbody2D>();
          Ani= GetComponent<Animator>();
+        spriteRenderer = GetComponent<SpriteRenderer>();
     }
     private void Update()
     {
@@ -45,9 +49,9 @@ public class Movemanager : MonoBehaviour
     public virtual void Filip()
     {
         if (inputManager.Instance.Move < 0 && !Isfascingright && checkground)
-        { this.transform.localScale = new Vector3(-1, 1, 1); Isfascingright = true; }
+        { spriteRenderer.flipX = true; Isfascingright = true; }
         if (inputManager.Instance.Move > 0 && Isfascingright)
-        { transform.localScale = new Vector3(1, 1, 1); Isfascingright = false; }
+        {spriteRenderer.flipX = false; Isfascingright = false; }
     }
 
     void Animarun()
