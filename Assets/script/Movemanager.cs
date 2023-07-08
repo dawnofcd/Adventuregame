@@ -1,5 +1,7 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
+using System.Security.Cryptography;
 using Unity.Mathematics;
 using Unity.VisualScripting;
 using UnityEditor.Tilemaps;
@@ -41,6 +43,7 @@ public class Movemanager : MonoBehaviour
     }
     private void Update()
     {
+        Checkground();
         MoveHorizal();
         Jumpping();
         
@@ -49,13 +52,25 @@ public class Movemanager : MonoBehaviour
 
     public virtual void MoveHorizal()
     {
-       
+
+        rb.velocity = new Vector2(PlayerCrl.instance.inputManager.MoveX * speed, rb.velocity.y);
         if (PlayerCrl.instance.inputManager.MoveX != 0)
         {
-            rb.velocity = new Vector2(PlayerCrl.instance.inputManager.MoveX*speed, rb.velocity.y);
-            Changestate(Runstate);
+            if (Isground)
+                Changestate(Runstate);
+          
+            else Changestate(Jumptstate);
+
+           
         }
-        else Changestate(Idlestate);
+        else
+        {
+            if (Isground) Changestate(Idlestate);
+            else if(!Isground) Changestate(Jumptstate);
+            else if(doublejump) Changestate(Doublejumpstate);
+        }
+      
+      
         Filip();    
     }
     public virtual void Filip()
@@ -66,22 +81,21 @@ public class Movemanager : MonoBehaviour
         {spriteRenderer.flipX = false; Isfascingright = false; }
     }
 
-    
-    
-    void Jumpping()
+    void Checkground()
     {
         Isground = Physics2D.OverlapCircle(Jumpaccept.position, 0.1f, ground);
-
+    }
+    
+    void Jumpping()
+    { 
         if (Isground &&!PlayerCrl.instance.inputManager.Jumkey)
         { doublejump = false; }
         if (PlayerCrl.instance.inputManager.Jumpkeydown)
         {
-            Changestate(Jumptstate);
+
             if (Isground||doublejump)
-            { 
-                
+            {
                 rb.velocity = new Vector2(rb.velocity.x, jumpforce);
-                Changestate(Doublejumpstate);
                 doublejump = !doublejump;
             }
         }
