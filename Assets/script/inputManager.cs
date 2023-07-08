@@ -4,12 +4,12 @@ using UnityEngine;
 
 public class inputManager : MonoBehaviour
 {
-    
+
     public float MoveX;
     public bool Jumpkeydown;
     public bool Jumkey;
- 
-    
+
+
 
     private void Update()
     {
@@ -20,7 +20,7 @@ public class inputManager : MonoBehaviour
     public void InputkeyX()
     {
         MoveX = Input.GetAxis("Horizontal");
-         
+
     }
     public void InputJump()
     {
