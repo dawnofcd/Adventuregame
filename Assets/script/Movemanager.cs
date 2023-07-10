@@ -2,6 +2,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using System.Security.Cryptography;
+using System.Xml;
 using Unity.Mathematics;
 using Unity.VisualScripting;
 using UnityEditor.Tilemaps;
@@ -26,7 +27,7 @@ public class Movemanager : MonoBehaviour
     public bool Iswall;
     public LayerMask Wall;
     public Transform Wallaccept;
-    public float WallsideSpeed = 2f;
+    public int WallsideSpeed = 2;
     public bool isWalljumping;
     public float wallJumpingdirect;
     public float wallJumptime = 0.2f;
@@ -58,8 +59,8 @@ public class Movemanager : MonoBehaviour
     }
     private void Update()
     {
-        Checkwall();
         Checkground();
+        Checkwall();
         MoveHorizal();
         Jumpping();
         Walljump();
@@ -74,13 +75,9 @@ public class Movemanager : MonoBehaviour
             if (Isground) Changestate(Runstate);
             else
             {
-
-                if (!doublejump) Changestate(Doublejumpstate);
-
-                else
-                {  
-                    Changestate(Jumptstate);
-                }
+                if (!doublejump && !Iswall ) Changestate(Doublejumpstate);
+                else if (!Iswall) Changestate(Jumptstate);
+                else if (Iswall) { Changestate(wallJumpstate); }
             }
         }
         else
@@ -91,25 +88,30 @@ public class Movemanager : MonoBehaviour
                 if (!doublejump) Changestate(Doublejumpstate);
                 else
                 {
-                    Changestate(Jumptstate);
+                    if (!Iswall) Changestate(Jumptstate);
+                    else Changestate(wallJumpstate);
 
-                } 
+                }
             }
         }
-        if(!isWalljumping)
-        Flip();
+        if (!isWalljumping)
+            Flip();
     }
     public virtual void Flip()
     {
 
         if (PlayerCrl.instance.inputManager.MoveX < 0 && !Isfascingright)
-        { transform.localScale = new Vector3(-3, 3, 3);
+        {
+            transform.localScale = new Vector3(-3, 3, 3);
             // spriteRenderer.flipX = true;
-            Isfascingright = true; }
+            Isfascingright = true;
+        }
         if (PlayerCrl.instance.inputManager.MoveX > 0 && Isfascingright)
-        { transform.localScale = new Vector3(3, 3, 3);
+        {
+            transform.localScale = new Vector3(3, 3, 3);
             //spriteRenderer.flipX = false;
-            Isfascingright = false; }
+            Isfascingright = false;
+        }
     }
 
     void Checkground()
@@ -143,6 +145,7 @@ public class Movemanager : MonoBehaviour
     {
         if (Iswall && !Isground && PlayerCrl.instance.inputManager.MoveX != 0f)
         {
+
             isWallsilide = true;
             rb.velocity = new Vector2(rb.velocity.x, math.clamp(rb.velocity.y, -WallsideSpeed, float.MaxValue));
         }
@@ -164,7 +167,8 @@ public class Movemanager : MonoBehaviour
             wallJumpingcounter -= Time.deltaTime;
         }
         if (PlayerCrl.instance.inputManager.Jumpkeydown && wallJumpingcounter > 0f)
-        { isWalljumping = true; rb.velocity = new Vector2(wallJumpingdirect * wallJumpingPower.x, wallJumpingPower.y);
+        {
+            isWalljumping = true; rb.velocity = new Vector2(wallJumpingdirect * wallJumpingPower.x, wallJumpingPower.y);
 
             wallJumpingcounter = 0f;
             if (transform.localScale.x != wallJumpingdirect)
@@ -173,7 +177,7 @@ public class Movemanager : MonoBehaviour
                 Vector3 LocalScale = transform.localScale;
                 LocalScale.x *= -1f;
                 transform.localScale = LocalScale;
-                
+
             }
         }
         Invoke("Stopwalljumping", wallJumpingDuration);
@@ -182,5 +186,5 @@ public class Movemanager : MonoBehaviour
     void Stopwalljumping()
     {
         isWalljumping = false;
-    } 
+    }
 }
