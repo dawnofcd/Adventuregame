@@ -12,7 +12,7 @@ public class Movemanager : MonoBehaviour
 {
     [Header("Movement")]
     private float speed = 10f;
-    Rigidbody2D rb;
+    public Rigidbody2D rb;
     Vector2 Vector2;
     public bool Isground;
     bool Isfascingright = true;
@@ -20,7 +20,21 @@ public class Movemanager : MonoBehaviour
     public Transform Jumpaccept;
     public LayerMask ground;
     bool doublejump;
-    SpriteRenderer spriteRenderer;
+
+    [Header("walljump")]
+    public bool isWallsilide = true;
+    public bool Iswall;
+    public LayerMask Wall;
+    public Transform Wallaccept;
+    public float WallsideSpeed = 2f;
+    public bool isWalljumping;
+    public float wallJumpingdirect;
+    public float wallJumptime = 0.2f;
+    public float wallJumpingcounter;
+    public float wallJumpingDuration = 0.4f;
+    public Vector2 wallJumpingPower = new Vector2(2f, 8f);
+
+
 
     [Header("Animation")]
     public Animator Ani;
@@ -29,6 +43,7 @@ public class Movemanager : MonoBehaviour
     const string Jumptstate = "Jump";
     const string Doublejumpstate = "Double_jump";
     const string Idlestate = "Idle";
+    const string wallJumpstate = "Wall_jump";
     protected virtual void Changestate(string NewState)
     {
         if (CurrenState == NewState) return;
@@ -39,13 +54,16 @@ public class Movemanager : MonoBehaviour
     {
         rb = GetComponent<Rigidbody2D>();
         Ani = GetComponent<Animator>();
-        spriteRenderer = GetComponent<SpriteRenderer>();
+
     }
     private void Update()
     {
+        Checkwall();
         Checkground();
         MoveHorizal();
         Jumpping();
+        Walljump();
+        Slide();
     }
 
     public virtual void MoveHorizal()
@@ -59,7 +77,10 @@ public class Movemanager : MonoBehaviour
 
                 if (!doublejump) Changestate(Doublejumpstate);
 
-                else Changestate(Jumptstate);
+                else
+                {  
+                    Changestate(Jumptstate);
+                }
             }
         }
         else
@@ -68,26 +89,41 @@ public class Movemanager : MonoBehaviour
             else
             {
                 if (!doublejump) Changestate(Doublejumpstate);
-                else Changestate(Jumptstate);
+                else
+                {
+                    Changestate(Jumptstate);
+
+                } 
             }
         }
+        if(!isWalljumping)
         Flip();
     }
     public virtual void Flip()
     {
+
         if (PlayerCrl.instance.inputManager.MoveX < 0 && !Isfascingright)
-        { spriteRenderer.flipX = true; Isfascingright = true; }
+        { transform.localScale = new Vector3(-3, 3, 3);
+            // spriteRenderer.flipX = true;
+            Isfascingright = true; }
         if (PlayerCrl.instance.inputManager.MoveX > 0 && Isfascingright)
-        { spriteRenderer.flipX = false; Isfascingright = false; }
+        { transform.localScale = new Vector3(3, 3, 3);
+            //spriteRenderer.flipX = false;
+            Isfascingright = false; }
     }
 
     void Checkground()
     {
         Isground = Physics2D.OverlapCircle(Jumpaccept.position, 0.1f, ground);
     }
+    void Checkwall()
+    {
 
+        Iswall = Physics2D.OverlapCircle(Wallaccept.position, 0.2f, Wall);
+    }
     void Jumpping()
     {
+
         if (PlayerCrl.instance.inputManager.Jumpkeydown)
         {
             if (Isground)
@@ -102,4 +138,49 @@ public class Movemanager : MonoBehaviour
             }
         }
     }
+
+    void Slide()
+    {
+        if (Iswall && !Isground && PlayerCrl.instance.inputManager.MoveX != 0f)
+        {
+            isWallsilide = true;
+            rb.velocity = new Vector2(rb.velocity.x, math.clamp(rb.velocity.y, -WallsideSpeed, float.MaxValue));
+        }
+        else { isWallsilide = false; }
+    }
+
+    void Walljump()
+    {
+        if (isWallsilide)
+        {
+            isWalljumping = false;
+            wallJumpingdirect = -transform.localScale.x;
+            wallJumpingcounter = wallJumptime;
+            CancelInvoke(nameof(Stopwalljumping));
+
+        }
+        else
+        {
+            wallJumpingcounter -= Time.deltaTime;
+        }
+        if (PlayerCrl.instance.inputManager.Jumpkeydown && wallJumpingcounter > 0f)
+        { isWalljumping = true; rb.velocity = new Vector2(wallJumpingdirect * wallJumpingPower.x, wallJumpingPower.y);
+
+            wallJumpingcounter = 0f;
+            if (transform.localScale.x != wallJumpingdirect)
+            {
+                Isfascingright = !Isfascingright;
+                Vector3 LocalScale = transform.localScale;
+                LocalScale.x *= -1f;
+                transform.localScale = LocalScale;
+                
+            }
+        }
+        Invoke("Stopwalljumping", wallJumpingDuration);
+    }
+
+    void Stopwalljumping()
+    {
+        isWalljumping = false;
+    } 
 }
