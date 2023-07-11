@@ -21,6 +21,7 @@ public class Movemanager : MonoBehaviour
     public Transform Jumpaccept;
     public LayerMask ground;
     bool doublejump;
+    bool isAir;
 
     [Header("walljump")]
     public bool isWallsilide = true;
@@ -72,12 +73,17 @@ public class Movemanager : MonoBehaviour
         rb.velocity = new Vector2(PlayerCrl.instance.inputManager.MoveX * speed, rb.velocity.y);
         if (PlayerCrl.instance.inputManager.MoveX != 0)
         {
-            if (Isground) Changestate(Runstate);
-            else
+            if (Isground)
+                Changestate(Runstate);
+            else if (!Isground && !Iswall)
             {
-                if (!doublejump && !Iswall ) Changestate(Doublejumpstate);
-                else if (!Iswall) Changestate(Jumptstate);
-                else if (Iswall) { Changestate(wallJumpstate); }
+                if (isAir) Changestate(Doublejumpstate);
+                if (doublejump && !Iswall) Changestate(Jumptstate);
+            }
+            else if (!Isground && Iswall)
+            {
+                if (Iswall) Changestate(wallJumpstate);
+                else if (!doublejump) Changestate(Jumptstate);
             }
         }
         else
@@ -85,12 +91,11 @@ public class Movemanager : MonoBehaviour
             if (Isground) Changestate(Idlestate);
             else
             {
-                if (!doublejump) Changestate(Doublejumpstate);
+                if (Iswall) Changestate(wallJumpstate);
                 else
-                {
-                    if (!Iswall) Changestate(Jumptstate);
-                    else Changestate(wallJumpstate);
-
+                { 
+                    if (doublejump) Changestate(Jumptstate);
+                    if (isAir) Changestate(Doublejumpstate);
                 }
             }
         }
@@ -132,11 +137,13 @@ public class Movemanager : MonoBehaviour
             {
                 rb.velocity = new Vector2(rb.velocity.x, jumpforce);
                 doublejump = true;
+                isAir = false;
             }
             else if (doublejump)
             {
                 rb.velocity = new Vector2(rb.velocity.x, jumpforce);
-                doublejump = false;
+                doublejump = false ;
+                isAir = true;
             }
         }
     }
