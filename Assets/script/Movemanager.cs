@@ -28,13 +28,13 @@ public class Movemanager : MonoBehaviour
     public bool Iswall;
     public LayerMask Wall;
     public Transform Wallaccept;
-    public int WallsideSpeed = 2;
+    public float WallsideSpeed = 5f;
     public bool isWalljumping;
     public float wallJumpingdirect;
     public float wallJumptime = 0.2f;
     public float wallJumpingcounter;
     public float wallJumpingDuration = 0.4f;
-    public Vector2 wallJumpingPower = new Vector2(2f, 8f);
+    public Vector2 wallJumpingPower = new Vector2(4f, 16f);
 
 
 
@@ -150,7 +150,7 @@ public class Movemanager : MonoBehaviour
 
     void Slide()
     {
-        if (Iswall && !Isground && PlayerCrl.instance.inputManager.MoveX != 0f)
+        if (Iswall && !Isground && PlayerCrl.instance.inputManager.MoveX == 0f)
         {
 
             isWallsilide = true;

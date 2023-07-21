@@ -14,7 +14,7 @@ TagManager:
   - UI
   - ground
   - wall
-  - 
+  - UI
   - 
   - 
   - 
@@ -47,4 +47,7 @@ TagManager:
     locked: 0
   - name: ground
     uniqueID: 578822637
+    locked: 0
+  - name: UI
+    uniqueID: 2472193189
     locked: 0
