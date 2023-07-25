@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Security.Cryptography;
@@ -194,4 +194,5 @@ public class Movemanager : MonoBehaviour
     {
         isWalljumping = false;
     }
+
 }

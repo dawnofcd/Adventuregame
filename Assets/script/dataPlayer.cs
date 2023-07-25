@@ -4,15 +4,9 @@ using UnityEngine;
 
 public class dataPlayer : MonoBehaviour
 {
-    // Start is called before the first frame update
-    void Start()
-    {
-        
-    }
-
-    // Update is called once per frame
-    void Update()
-    {
-        
-    }
+   protected GameObject Player;
+   protected int Coin;
+   protected int Hp=100;
+   protected int Heath=1;
+   protected Vector3 playerPos;
 }
