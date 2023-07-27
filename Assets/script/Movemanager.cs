@@ -16,7 +16,7 @@ public class Movemanager : MonoBehaviour
     public Rigidbody2D rb;
     Vector2 Vector2;
     public bool Isground;
-    bool Isfascingright = true;
+    bool Isfascingright;
     private float jumpforce = 10f;
     public Transform Jumpaccept;
     public LayerMask ground;

@@ -8,8 +8,8 @@ public class dataPlayer : MonoBehaviour
    protected int Coin;
    public  int Hp=100;
    public int currentHp=100;
-    protected int Heath = 3;
-    public int currentheath;
+   protected int Heath = 3;
+   public int currentheath=1;
    protected Vector3 playerPos;
 
 

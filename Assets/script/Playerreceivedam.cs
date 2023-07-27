@@ -11,20 +11,51 @@ public class Playerreceivedam : MonoBehaviour
             heath.Add(GameObject.Find("uiheath_2"));
             heath.Add(GameObject.Find("uiheath_3"));  
     }
-    void CaculatorHeath()
+    void CaculatorHp(int currentheath)
     {
         if (PlayerCrl.instance.dataPlayer.currentHp<=0)
         {
-             PlayerCrl.instance.dataPlayer.currentheath -= 1;
-            if (PlayerCrl.instance.dataPlayer.currentheath==0)
-            {
-                Die();
-            }   
-        }    
-        
+            PlayerCrl.instance.dataPlayer.currentheath -= 1;
+            PlayerCrl.instance.dataPlayer.currentHp = 100;
+        }
+
+        heathstate(currentheath);
+            
     }
+
+    void heathstate(int currentheath)
+    {
+        if (currentheath==1)
+        {
+            this.heath[0].SetActive(true);
+            this.heath[1].SetActive(false);
+            this.heath[2].SetActive(false);
+
+        }
+        else if (currentheath == 2)
+        {
+            this.heath[0].SetActive(true);
+            this.heath[1].SetActive(true);
+            this.heath[2].SetActive(false);
+        }
+        else if (currentheath == 3)
+        {
+            this.heath[0].SetActive(true);
+            this.heath[1].SetActive(true);
+            this.heath[2].SetActive(true);
+        }
+        else if (currentheath == 0)
+        {
+            Die();
+        }
+    }    
     void Die()
     {
 
-    }    
+    }
+    private void Update()
+    {
+        CaculatorHp(PlayerCrl.instance.dataPlayer.currentheath);
+    }
+
 }
