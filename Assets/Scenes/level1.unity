@@ -133,7 +133,7 @@ GameObject:
   m_Component:
   - component: {fileID: 164149690}
   - component: {fileID: 164149691}
-  m_Layer: 6
+  m_Layer: 0
   m_Name: trapidle
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1054,6 +1054,7 @@ GameObject:
   - component: {fileID: 890318119}
   - component: {fileID: 890318121}
   - component: {fileID: 890318122}
+  - component: {fileID: 890318123}
   m_Layer: 5
   m_Name: hpbar
   m_TagString: Untagged
@@ -1225,6 +1226,19 @@ MonoBehaviour:
   m_OnValueChanged:
     m_PersistentCalls:
       m_Calls: []
+--- !u!114 &890318123
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 890318117}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ffbab84f924e8d34b9a97570e94f7613, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _Hpbar: {fileID: 890318122}
 --- !u!1 &892915242
 GameObject:
   m_ObjectHideFlags: 0
@@ -7986,6 +8000,7 @@ GameObject:
   - component: {fileID: 1090165129}
   - component: {fileID: 1090165130}
   - component: {fileID: 1090165131}
+  - component: {fileID: 1090165132}
   m_Layer: 0
   m_Name: GamePlayer
   m_TagString: Player
@@ -8163,6 +8178,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9d666e10631a5af4799823093f5eea9e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  dataPlayer: {fileID: 0}
   inputManager: {fileID: 0}
   moveManager: {fileID: 0}
 --- !u!70 &1090165131
@@ -8181,6 +8197,21 @@ CapsuleCollider2D:
   m_Offset: {x: 0.0037403107, y: -0.041142147}
   m_Size: {x: 0.18214798, y: 0.23130417}
   m_Direction: 0
+--- !u!114 &1090165132
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1090165122}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ff253b6581c4b1d4599ab96753cf66bb, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  Hp: 100
+  currentHp: 100
+  currentheath: 0
 --- !u!1 &1164183300
 GameObject:
   m_ObjectHideFlags: 0
@@ -8194,7 +8225,7 @@ GameObject:
   - component: {fileID: 1164183302}
   - component: {fileID: 1164183304}
   m_Layer: 5
-  m_Name: uiheath (2)
+  m_Name: uiheath_2
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -8323,7 +8354,7 @@ GameObject:
   - component: {fileID: 1267016661}
   - component: {fileID: 1267016663}
   m_Layer: 5
-  m_Name: uiheath (3)
+  m_Name: uiheath_3
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -25718,7 +25749,7 @@ GameObject:
   - component: {fileID: 1368284225}
   - component: {fileID: 1368284227}
   m_Layer: 5
-  m_Name: uiheath (1)
+  m_Name: uiheath_1
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -26008,9 +26039,10 @@ GameObject:
   m_Component:
   - component: {fileID: 1574812822}
   - component: {fileID: 1574812821}
+  - component: {fileID: 1574812823}
   m_Layer: 0
   m_Name: Trapidle
-  m_TagString: Untagged
+  m_TagString: Trap
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -26025,8 +26057,8 @@ BoxCollider2D:
   m_Enabled: 1
   m_Density: 1
   m_Material: {fileID: 0}
-  m_IsTrigger: 0
-  m_UsedByEffector: 1
+  m_IsTrigger: 1
+  m_UsedByEffector: 0
   m_UsedByComposite: 0
   m_Offset: {x: 0.021256447, y: 0.01594305}
   m_SpriteTilingProperty:
@@ -26059,6 +26091,19 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 9
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1574812823
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1574812820}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 44d242032a423c344895dc03204fb6dd, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _Hpbar: {fileID: 0}
 --- !u!1 &1826121009
 GameObject:
   m_ObjectHideFlags: 0
@@ -26069,7 +26114,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1826121010}
   - component: {fileID: 1826121011}
-  m_Layer: 6
+  m_Layer: 0
   m_Name: trapidle (1)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -26153,7 +26198,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1830157605}
   - component: {fileID: 1830157606}
-  m_Layer: 6
+  m_Layer: 0
   m_Name: trapidle (2)
   m_TagString: Untagged
   m_Icon: {fileID: 0}

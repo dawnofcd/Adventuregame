@@ -6,7 +6,11 @@ public class dataPlayer : MonoBehaviour
 {
    protected GameObject Player;
    protected int Coin;
-   protected int Hp=100;
-   protected int Heath=1;
+   public  int Hp=100;
+   public int currentHp=100;
+    protected int Heath = 3;
+    public int currentheath;
    protected Vector3 playerPos;
+
+
 }

@@ -36,6 +36,7 @@ public class Movemanager : MonoBehaviour
     public float wallJumpingDuration = 0.4f;
     public Vector2 wallJumpingPower = new Vector2(4f, 16f);
 
+    bool trap;
 
 
     [Header("Animation")]
@@ -46,7 +47,8 @@ public class Movemanager : MonoBehaviour
     const string Doublejumpstate = "Double_jump";
     const string Idlestate = "Idle";
     const string wallJumpstate = "Wall_jump";
-    protected virtual void Changestate(string NewState)
+    const string Trap_damestate="Trap_state";
+    public virtual void Changestate(string NewState)
     {
         if (CurrenState == NewState) return;
         Ani.Play(NewState);
@@ -71,7 +73,7 @@ public class Movemanager : MonoBehaviour
     public virtual void MoveHorizal()
     {
         rb.velocity = new Vector2(PlayerCrl.instance.inputManager.MoveX * speed, rb.velocity.y);
-        if (PlayerCrl.instance.inputManager.MoveX != 0)
+        if (PlayerCrl.instance.inputManager.MoveX != 0 )
         {
             if (Isground)
                 Changestate(Runstate);
@@ -195,4 +197,5 @@ public class Movemanager : MonoBehaviour
         isWalljumping = false;
     }
 
+    
 }
