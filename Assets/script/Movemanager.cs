@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Security.Cryptography;
@@ -20,34 +20,37 @@ public class Movemanager : MonoBehaviour
     private float jumpforce = 10f;
     public Transform Jumpaccept;
     public LayerMask ground;
-    bool doublejump;
-    bool isAir;
+    public bool doublejump;
+   
 
     [Header("walljump")]
-    public bool isWallsilide = true;
+    public bool isWallsilide;
     public bool Iswall;
     public LayerMask Wall;
     public Transform Wallaccept;
     public float WallsideSpeed = 5f;
-    public bool isWalljumping;
+    public bool  isWalljumping;
     public float wallJumpingdirect;
     public float wallJumptime = 0.2f;
     public float wallJumpingcounter;
     public float wallJumpingDuration = 0.4f;
     public Vector2 wallJumpingPower = new Vector2(4f, 16f);
-
-    bool trap;
-
-
+    bool Checkwalljump;
+   
     [Header("Animation")]
     public Animator Ani;
     string CurrenState;
+    public bool AnimateCheckjump;
     const string Runstate = "Run";
     const string Jumptstate = "Jump";
     const string Doublejumpstate = "Double_jump";
     const string Idlestate = "Idle";
     const string wallJumpstate = "Wall_jump";
     const string Trap_damestate="Trap_state";
+
+   
+
+
     public virtual void Changestate(string NewState)
     {
         if (CurrenState == NewState) return;
@@ -58,52 +61,59 @@ public class Movemanager : MonoBehaviour
     {
         rb = GetComponent<Rigidbody2D>();
         Ani = GetComponent<Animator>();
-
     }
     private void Update()
     {
+        Animate();
         Checkground();
         Checkwall();
         MoveHorizal();
         Jumpping();
         Walljump();
         Slide();
+        if (!isWalljumping)
+        {
+            Flip();
+        }
     }
 
-    public virtual void MoveHorizal()
+   
+    public virtual void Animate()
     {
-        rb.velocity = new Vector2(PlayerCrl.instance.inputManager.MoveX * speed, rb.velocity.y);
-        if (PlayerCrl.instance.inputManager.MoveX != 0 )
+        
+        if (PlayerCrl.instance.inputManager.MoveX != 0)
         {
-            if (Isground)
-                Changestate(Runstate);
-            else if (!Isground && !Iswall)
+            AnimateCheckjump = true; // Neu nhan nut horizal thi 
+            if (Isground) Changestate(Runstate);
+
+            else
             {
-                if (isAir) Changestate(Doublejumpstate);
-                if (doublejump && !Iswall) Changestate(Jumptstate);
+                if (!doublejump || isWalljumping || doublejump)
+                {
+                    Changestate(Jumptstate);
+                }
             }
-            else if (!Isground && Iswall)
-            {
-                if (Iswall) Changestate(wallJumpstate);
-                else if (!doublejump) Changestate(Jumptstate);
-            }
+    
         }
         else
         {
-            if (Isground) Changestate(Idlestate);
-            else
+           if (Isground) Changestate(Idlestate);
+              
+          else
             {
-                if (Iswall) Changestate(wallJumpstate);
-                else
-                { 
-                    if (doublejump) Changestate(Jumptstate);
-                    if (isAir) Changestate(Doublejumpstate);
-                }
+                if (isWallsilide) Changestate(wallJumpstate);
+                if (isWalljumping) Changestate(Jumptstate);
+                if (!doublejump && !isWallsilide) Changestate(Jumptstate);
+                if (doublejump && !AnimateCheckjump) { Changestate(Doublejumpstate); }   // dieu kien khong cho anima cua double jump xay ra khi walljump
             }
         }
-        if (!isWalljumping)
-            Flip();
+
     }
+    public virtual void MoveHorizal()
+    {
+        rb.velocity = new Vector2(PlayerCrl.instance.inputManager.MoveX * speed, rb.velocity.y);
+        Flip();
+     }
     public virtual void Flip()
     {
 
@@ -124,30 +134,32 @@ public class Movemanager : MonoBehaviour
     void Checkground()
     {
         Isground = Physics2D.OverlapCircle(Jumpaccept.position, 0.1f, ground);
+        if (Isground) AnimateCheckjump = false; // neu cham dat thi doublejump=fasle;
+
     }
     void Checkwall()
     {
-
         Iswall = Physics2D.OverlapCircle(Wallaccept.position, 0.2f, Wall);
+      if(Iswall)  AnimateCheckjump = true; //neu cham tuong thi doublejump=true;
     }
     void Jumpping()
     {
-
+       
         if (PlayerCrl.instance.inputManager.Jumpkeydown)
         {
             if (Isground)
             {
                 rb.velocity = new Vector2(rb.velocity.x, jumpforce);
-                doublejump = true;
-                isAir = false;
+                doublejump = false;
+                AnimateCheckjump = true; 
             }
-            else if (doublejump)
+            else if (!doublejump)
             {
                 rb.velocity = new Vector2(rb.velocity.x, jumpforce);
-                doublejump = false ;
-                isAir = true;
+                doublejump = true;
             }
         }
+        Flip();
     }
 
     void Slide()

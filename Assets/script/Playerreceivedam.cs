@@ -16,6 +16,10 @@ public class Playerreceivedam : MonoBehaviour
         if (PlayerCrl.instance.dataPlayer.currentHp<=0)
         {
             PlayerCrl.instance.dataPlayer.currentheath -= 1;
+            if (PlayerCrl.instance.dataPlayer.currentheath>=3)
+            {
+                PlayerCrl.instance.dataPlayer.currentheath = 3;
+            }
             PlayerCrl.instance.dataPlayer.currentHp = 100;
         }
 
@@ -47,7 +51,13 @@ public class Playerreceivedam : MonoBehaviour
         else if (currentheath == 0)
         {
             Die();
+
+            this.heath[0].SetActive(false);
+            this.heath[1].SetActive(false);
+            this.heath[2].SetActive(false);
         }
+        
+       
     }    
     void Die()
     {
