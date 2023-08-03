@@ -19,22 +19,22 @@ public class Trapdamager : MonoBehaviour
             if (timeElapsed >= 1f)
             {
                PlayerCrl.instance.dataPlayer.currentHp -=10;
-                timeElapsed = 0f;
+               timeElapsed = 0f;
             }
         }
     }
 
-    private void OnTriggerEnter2D(Collider2D collision)
+    
+
+    private void OnCollisionEnter2D(Collision2D collision)
     {
         if (collision.gameObject.CompareTag("Player"))
         {
             isColliding = true;
             PlayerCrl.instance.dataPlayer.currentHp -= 10;
-            Debug.Log("Va chạm");
         }
     }
-
-    private void OnTriggerExit2D(Collider2D collision)
+    private void OnCollisionExit2D(Collision2D collision)
     {
         if (collision.gameObject.CompareTag("Player"))
         {
@@ -42,5 +42,6 @@ public class Trapdamager : MonoBehaviour
             timeElapsed = 0f; // Reset thời gian khi ngừng va chạm
         }
     }
+    
    
 }

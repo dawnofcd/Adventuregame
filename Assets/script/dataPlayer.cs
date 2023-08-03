@@ -10,6 +10,7 @@ public class dataPlayer : MonoBehaviour
    public int currentHp=100;
    public int currentheath;
    protected Vector3 playerPos;
+    public int fruits;
 
 
 }
