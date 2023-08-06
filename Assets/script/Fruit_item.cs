@@ -21,6 +21,7 @@ public class Fruit_item : MonoBehaviour
     [SerializeField] private SpriteRenderer sr;
     [SerializeField] private Sprite[] fruitImage;
 
+
     private void OnTriggerEnter2D(Collider2D collison)
     {
         if (collison.GetComponent<dataPlayer>() != null)
@@ -42,7 +43,6 @@ public class Fruit_item : MonoBehaviour
         anim.SetLayerWeight((int)myFruitType, 1);
 
     }
-
     private void OnValidate()
     {
         sr.sprite = fruitImage[(int)myFruitType];

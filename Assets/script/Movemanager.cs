@@ -13,16 +13,15 @@ using UnityEngine.Timeline;
 public class Movemanager : MonoBehaviour
 {
     [Header("Movement")]
-    private float speed = 10f;
+    private float speedMove = 10f;
     public Rigidbody2D rb;
-    Vector2 Vector2;
     public bool Isground;
     bool Isfascingright;
     private float jumpforce = 10f;
     public Transform Jumpaccept;
     public LayerMask ground;
-    public bool doublejump;
-   
+    public bool doubleJump;
+
 
     [Header("walljump")]
     public bool isWallsilide;
@@ -37,29 +36,30 @@ public class Movemanager : MonoBehaviour
     public float wallJumpingDuration = 0.4f;
     public Vector2 wallJumpingPower = new Vector2(4f, 16f);
     bool Checkwalljump;
-    bool Checkhitdame;
-    float TrapforceX = 5f;
+    bool checkHitdame;
+    float pushForce=10f;
+   
 
     [Header("Animation")]
     public Animator Ani;
-    string CurrenState;
+    string CurrentState;
     public bool AnimateCheckjump;
     const string Runstate = "Run";
     const string Jumptstate = "Jump";
     const string Doublejumpstate = "Double_jump";
     const string Idlestate = "Idle";
     const string wallJumpstate = "Wall_jump";
-    const string Trap_damestate="Trap_state";
+    const string Trap_damestate = "Trap_state";
     const string hitTrap = "Hitdame";
 
-   
+
 
 
     public virtual void Changestate(string NewState)
     {
-        if (CurrenState == NewState) return;
+        if (CurrentState == NewState) return;
         Ani.Play(NewState);
-        CurrenState = NewState;
+        CurrentState = NewState;
     }
     private void Awake()
     {
@@ -70,20 +70,25 @@ public class Movemanager : MonoBehaviour
     {
         if (collision.gameObject.CompareTag("Trap"))
         {
-            Checkhitdame = true;
-            Vector2 pushDirection = transform.position - collision.transform.position;
-            pushDirection.Normalize();
-            this.rb.AddForce(TrapforceX*pushDirection, ForceMode2D.Impulse);
-
+            Changestate(hitTrap);
+            Pushdame();// tac dung luc khi dang nhan dame
+            checkHitdame = true;
+            doubleJump = false; //fix loi cham bay double jump
+           
         }
+       
     }
 
     private void OnCollisionExit2D(Collision2D collision)
     {
         if (collision.gameObject.CompareTag("Trap"))
         {
-            Checkhitdame = false;
+            checkHitdame = false;
         }
+    }
+    void Pushdame()
+    {
+        rb.velocity = new Vector2(pushForce, rb.velocity.y);
     }
     private void Update()
     {
@@ -100,43 +105,45 @@ public class Movemanager : MonoBehaviour
         }
     }
 
-   
+
     public virtual void Animate()
     {
-
-        if (PlayerCrl.instance.inputManager.MoveX != 0)
-        {  
-            AnimateCheckjump = true; // Neu nhan nut horizal thi 
+       
+          if (PlayerCrl.instance.inputManager.MoveX != 0)
+        {
+               AnimateCheckjump = true; // Neu nhan nut horizal thi 
             if (Isground) Changestate(Runstate);
-              
-            else
+
+            else 
             {
-              
-                if (!doublejump || isWalljumping || doublejump)
-                     Changestate(Jumptstate);
+
+                if (!doubleJump || isWalljumping || doubleJump)
+                    Changestate(Jumptstate);
             }
         }
         else
         {
-            if (Isground) Changestate(Idlestate);
+            if (Isground && !checkHitdame) Changestate(Idlestate);
 
             else
             {
                 if (isWallsilide) Changestate(wallJumpstate);
                 if (isWalljumping) Changestate(Jumptstate);
-                if (!doublejump && !isWallsilide) Changestate(Jumptstate);
-                if (doublejump && !AnimateCheckjump && !Checkhitdame) { Changestate(Doublejumpstate); }
-                else if (Checkhitdame) Changestate(hitTrap);// dieu kien khong cho anima cua double jump xay ra khi walljump
+                if (!doubleJump && !isWallsilide) Changestate(Jumptstate);
+                if (doubleJump && !AnimateCheckjump && !checkHitdame) { Changestate(Doublejumpstate); }// dieu kien khong cho animaion cua double jump xay ra khi walljump
+                else if (checkHitdame) Changestate(hitTrap); 
             }
         }
 
     }
     public virtual void MoveHorizal()
     {
-        rb.velocity = new Vector2(PlayerCrl.instance.inputManager.MoveX * speed, rb.velocity.y);
-        Flip();
-     }
-    public virtual void Flip()
+       
+            rb.velocity = new Vector2(PlayerCrl.instance.inputManager.MoveX * speedMove, rb.velocity.y);
+            Flip();
+    }
+    
+    public virtual void Flip() // xoay nguoi
     {
 
         if (PlayerCrl.instance.inputManager.MoveX < 0 && !Isfascingright)
@@ -153,35 +160,40 @@ public class Movemanager : MonoBehaviour
         }
     }
 
-    void Checkground()
+    public virtual void Checkground()
     {
         Isground = Physics2D.OverlapCircle(Jumpaccept.position, 0.1f, ground);
         if (Isground) AnimateCheckjump = false; // neu cham dat thi doublejump=fasle;
 
     }
-    void Checkwall()
+    public virtual void Checkwall()
     {
         Iswall = Physics2D.OverlapCircle(Wallaccept.position, 0.2f, Wall);
-      if(Iswall)  AnimateCheckjump = true; //neu cham tuong thi doublejump=true;
+        if (Iswall) AnimateCheckjump = true; //neu cham tuong thi doublejump=true;
+
+    }
+
+    void jump()
+    {
+        rb.velocity = new Vector2(rb.velocity.x, jumpforce);
     }
     void Jumpping()
     {
-       
+
         if (PlayerCrl.instance.inputManager.Jumpkeydown)
         {
             if (Isground)
             {
-                rb.velocity = new Vector2(rb.velocity.x, jumpforce);
-                doublejump = false;
-                AnimateCheckjump = true; 
+                jump();
+                doubleJump = false;
+                AnimateCheckjump = true;
             }
-            else if (!doublejump)
+            else if (!doubleJump)
             {
-                rb.velocity = new Vector2(rb.velocity.x, jumpforce);
-                doublejump = true;
+                jump();
+                doubleJump = true;
             }
         }
-        Flip();
     }
 
     void Slide()
@@ -211,7 +223,8 @@ public class Movemanager : MonoBehaviour
         }
         if (PlayerCrl.instance.inputManager.Jumpkeydown && wallJumpingcounter > 0f)
         {
-            isWalljumping = true; rb.velocity = new Vector2(wallJumpingdirect * wallJumpingPower.x, wallJumpingPower.y);
+            isWalljumping = true; 
+            rb.velocity = new Vector2(wallJumpingdirect * wallJumpingPower.x, wallJumpingPower.y);
 
             wallJumpingcounter = 0f;
             if (transform.localScale.x != wallJumpingdirect)
@@ -231,5 +244,7 @@ public class Movemanager : MonoBehaviour
         isWalljumping = false;
     }
 
-    
+   
+
+
 }
