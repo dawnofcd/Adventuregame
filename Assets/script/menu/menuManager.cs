@@ -9,6 +9,7 @@ public class menuManager : MonoBehaviour
    public void Loadnewgame()
     {
         SceneManager.LoadScene(sceneBuildIndex: 1);
+        Time.timeScale= 1.0f;
     }
 
     public void onClickExit()

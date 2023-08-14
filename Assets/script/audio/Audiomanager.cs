@@ -1,31 +1,37 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
-public class Audiomanager : MonoBehaviour
+public class Audiomanager : OptionManager
 {
     public static Audiomanager instance;
-    public AudioSource _musicSound, effectSound;
+    
     private void Awake()
     {
-       Audiomanager.instance = this;
+        instance = this;
+        DontDestroyOnLoad(gameObject);
     }
-   
-    void Start()
-    {
-        Playsound();
-    }    
+
     public void Playsound()
     {
         _musicSound.Play();
-    }    
+    }
+
+    public void ButtonClick()
+    {
+        effectSound.Play();
+    }
     void RunSound()
     {
-
+        Runsound.Play();
     }
 
     void JumpSound()
     {
+        Jumpsound.Play();
+    }
 
-    }    
 }
+
+

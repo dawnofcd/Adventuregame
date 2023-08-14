@@ -34,7 +34,7 @@ public class Movemanager : MonoBehaviour
     public float wallJumptime = 0.2f;
     public float wallJumpingcounter;
     public float wallJumpingDuration = 0.4f;
-    public Vector2 wallJumpingPower = new Vector2(4f, 16f);
+    public Vector2 wallJumpingPower = new Vector2(0f, 16f);
     bool Checkwalljump;
     bool checkHitdame;
     float pushForce=10f;
