@@ -22,14 +22,14 @@ public class Fruit_item : MonoBehaviour
     [SerializeField] private Sprite[] fruitImage;
 
 
-    private void OnTriggerEnter2D(Collider2D collison)
-    {
-        if (collison.GetComponent<dataPlayer>() != null)
-        {
-            collison.GetComponent<dataPlayer>();
-            Destroy(gameObject);
-        }
-    }
+    //private void OnTriggerEnter2D(Collider2D collison)
+    //{
+    //    if (collison.GetComponent<dataPlayer>() != null)
+    //    {
+    //        collison.GetComponent<dataPlayer>();
+    //        Destroy(gameObject);
+    //    }
+    //}
 
     private void Start()
     {
@@ -48,6 +48,18 @@ public class Fruit_item : MonoBehaviour
         sr.sprite = fruitImage[(int)myFruitType];
     }
 
+    private void OnTriggerEnter2D(Collider2D other)
+     {
+        
+    if (other.gameObject.GetComponent<Player>())
+     {
+       other.gameObject.GetComponent<Player>().CurrentHp+=10;
+        Destroy(this.gameObject);
+     }
+    }
+  
+   
+ 
 
 }
 

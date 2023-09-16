@@ -1,28 +1,32 @@
-﻿using System.Collections;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Enemy : MonoBehaviour
+public class Enemy : Danger
 {
 
-    protected Animator anim;
+   [SerializeField] protected Animator anim;
     protected Rigidbody2D rb;
     protected int facingDirection = -1;
-
+    [SerializeField] public float health;
     [SerializeField] protected LayerMask whatIsGround;
-    [SerializeField] protected LayerMask whatIsWall;
     [SerializeField] protected LayerMask whatToIgnore;
     [SerializeField] protected float groundCheckDistance;
     [SerializeField] protected float wallCheckDistance;
     [SerializeField] protected Transform groundCheck;
     [SerializeField] protected Transform wallCheck;
 
+    /// <summary>
+    /// Start is called on the frame when a script is enabled just before
+    /// any of the Update methods is called the first time.
+    /// </summary>
+
     protected bool wallDetected;
-    protected bool groundDetected;
+    [SerializeField]protected bool groundDetected;
     protected RaycastHit2D playerDectection;
 
     protected Transform player;
-    [HideInInspector] public bool invicinble;
+    [SerializeField] public bool invicinble;
 
     [Header("Move info")]
     [SerializeField] protected float speed;
@@ -34,30 +38,30 @@ public class Enemy : MonoBehaviour
 
     [Header("DeathSpawn")]
     [SerializeField] private GameObject EnemyDeathPrefab;
-    [SerializeField] private Transform EnemyDeathOrigin;
+    [SerializeField] protected Transform EnemyDeathOrigin;
+
 
 
     protected virtual void Start()
     {
         anim = GetComponent<Animator>();
         rb = GetComponent<Rigidbody2D>();
-       // FindPlayer();
-
-        //if (groundCheck == null)
-        //    groundCheck = transform;
-        //if (wallCheck == null)
-        //    wallCheck = transform;
+        InvokeRepeating("FindPlayer",0 , .5f);
+        if (groundCheck == null)
+           groundCheck = transform;
+        if (wallCheck == null)
+           wallCheck = transform;
 
     }
 
-    //private void FindPlayer()
-    //{
-    //    if (player != null)
-    //        return;
+    private void FindPlayer()
+    {
+       if (player != null)
+           return;
 
     //    if (PlayerCrl.instance.transform != null)
     //        player = PlayerCrl.instance.transform;
-    //}
+    }
 
     protected virtual void walkAround()
     {
@@ -76,14 +80,28 @@ public class Enemy : MonoBehaviour
             Flip();
         }
     }
-
+// không đụng thì là true, đụng là
     public virtual void Damage()
     {
+        health--;
+
         if (!invicinble)
-        {
-            canMove = false;
-            anim.SetTrigger("gotHit");
+        {   
+                anim.SetBool("gotHit", true);
+            if(health <=0)
+            {
+                anim.SetBool("gotHit", true);
+                canMove = false;
+                DestroyMe();
+            }
         }
+       
+    }
+
+    private void StopHitAnimation()
+    {
+        anim.SetBool("gotHit", false);
+        
     }
 
     public virtual void  DestroyMe()
@@ -101,7 +119,7 @@ public class Enemy : MonoBehaviour
     protected virtual void CollisionChecks()
     {
         groundDetected = Physics2D.Raycast(groundCheck.position, Vector2.down, groundCheckDistance, whatIsGround);
-        wallDetected = Physics2D.Raycast(wallCheck.position, Vector2.right * facingDirection, wallCheckDistance, whatIsWall);
+        wallDetected = Physics2D.Raycast(wallCheck.position, Vector2.right * facingDirection, wallCheckDistance, whatIsGround);
         playerDectection = Physics2D.Raycast(wallCheck.position, Vector2.right * facingDirection, 100, ~whatToIgnore);
     }
 

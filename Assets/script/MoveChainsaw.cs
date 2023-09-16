@@ -3,14 +3,14 @@ using System.Collections.Generic;
 using UnityEditor;
 using UnityEngine;
 
-public class MoveChainsaw : MonoBehaviour
+public class MoveChainsaw : Danger
 {
-
+   
     public Transform[] Waypoint;
 
     public int flatform, startpoint, endpoint;
     int direction=1;
-
+     int Damage=10;
     public float Speed;
 
     private void move()
@@ -38,11 +38,15 @@ public class MoveChainsaw : MonoBehaviour
         {
             Gizmos.DrawLine(Waypoint[flatform].position, Waypoint[startpoint].position);
             Gizmos.DrawLine(Waypoint[flatform].position, Waypoint[endpoint].position);
-        }    
-    }
+        } 
+
+
+   
     void Update()
     {
         move();
         
     }
+
+}
 }

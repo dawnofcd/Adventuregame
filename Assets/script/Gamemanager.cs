@@ -2,22 +2,31 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
-public class Gamemanager : MonoBehaviour
+public class GameManager : MonoBehaviour
 {  
-    public static Gamemanager instance;
+    public static GameManager instance;
     public GameObject Menupause;
    
-    
+    public int difficulty;
     private void Awake()
     {
         if (instance == null)
         {
-            Gamemanager.instance = this;
+            GameManager.instance = this;
             
          
         }
        
     }
+
+    private void Start()
+    {
+        if(difficulty == 0)
+            difficulty = PlayerPrefs.GetInt("GameDifficulty");
+
+
+    }
+
 
     public void PauseGame()
     {
@@ -33,11 +42,11 @@ public class Gamemanager : MonoBehaviour
     {
         SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
         Time.timeScale=1f;
+
     }
     
     public void BacktoHome()
     {
-        Destroy(GameObject.Find("Audiomanager"));
         SceneManager.LoadScene(sceneBuildIndex: 0);
     }
     void Savegame()

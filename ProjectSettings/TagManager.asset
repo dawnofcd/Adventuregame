@@ -8,6 +8,7 @@ TagManager:
   - Trap
   - ground
   - enenmy
+  - background
   - player
   layers:
   - Default
@@ -16,14 +17,14 @@ TagManager:
   - 
   - Water
   - UI
-  - ground
-  - wall
+  - Ground
+  - Wall
   - trap
-  - enemy
-  - player
-  - 
-  - 
-  - 
+  - Enemy
+  - Player
+  - BackGround
+  - Pieces
+  - Point
   - 
   - 
   - 
@@ -46,14 +47,26 @@ TagManager:
   - name: Default
     uniqueID: 0
     locked: 0
-  - name: background
+  - name: BackGround
     uniqueID: 4199407993
     locked: 0
-  - name: ground
+  - name: Ground
     uniqueID: 578822637
     locked: 0
   - name: Trap
     uniqueID: 941924901
+    locked: 0
+  - name: Enemy
+    uniqueID: 1914342689
+    locked: 0
+  - name: Player
+    uniqueID: 1834467873
+    locked: 0
+  - name: Pieces
+    uniqueID: 2668907497
+    locked: 0
+  - name: Point
+    uniqueID: 3434414703
     locked: 0
   - name: UI
     uniqueID: 2472193189
