@@ -72,7 +72,7 @@ GameObject:
   - component: {fileID: 6737677856523799221}
   - component: {fileID: 6737677856523799220}
   - component: {fileID: 6737677856523799222}
-  m_Layer: 9
+  m_Layer: 0
   m_Name: Rino
   m_TagString: enenmy
   m_Icon: {fileID: 0}
@@ -163,7 +163,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   anim: {fileID: 6737677856523799222}
+  Damemage: 0
   health: 3
+  isdeath: 0
   whatIsGround:
     serializedVersion: 2
     m_Bits: 64
@@ -174,12 +176,13 @@ MonoBehaviour:
   wallCheckDistance: 1.63
   groundCheck: {fileID: 6737677857381235514}
   wallCheck: {fileID: 6737677856987713869}
+  groundDetected: 0
   invicinble: 0
   speed: 4
   idleTime: 2
   EnemyDeathPrefab: {fileID: 4225836078305869470, guid: b50d2c6aa46cd6b429933fa5af0073ed, type: 3}
   EnemyDeathOrigin: {fileID: 6737677856803602212}
-  agroSpeed: 8
+  agroSpeed: 20
   shockTime: 1
 --- !u!61 &6737677856523799221
 BoxCollider2D:
@@ -258,7 +261,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 6737677856803602212}
-  m_Layer: 9
+  m_Layer: 0
   m_Name: deadorigin
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -289,7 +292,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 6737677856987713869}
-  m_Layer: 9
+  m_Layer: 0
   m_Name: checkwall
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -320,7 +323,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 6737677857381235514}
-  m_Layer: 9
+  m_Layer: 0
   m_Name: checkground
   m_TagString: Untagged
   m_Icon: {fileID: 0}

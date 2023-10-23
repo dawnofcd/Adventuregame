@@ -12,6 +12,7 @@ GameObject:
   - component: {fileID: 7292881376179618126}
   - component: {fileID: 7025382637226956247}
   - component: {fileID: 6656554970814046868}
+  - component: {fileID: 6970223804051021209}
   m_Layer: 0
   m_Name: Rinodeath
   m_TagString: enenmy
@@ -121,3 +122,14 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   MinOffSet: {x: -1, y: 4}
   MaxOffSet: {x: -1, y: 4}
+--- !u!247 &6970223804051021209
+ConstantForce2D:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4225836078305869470}
+  m_Enabled: 1
+  m_Force: {x: -1, y: 1}
+  m_RelativeForce: {x: 1, y: 3}
+  m_Torque: 200

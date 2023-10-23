@@ -6,38 +6,25 @@ using UnityEngine.UIElements;
 
 public class fallingPlat : MonoBehaviour
 {
-   [SerializeField]private Animator ani;
-   [SerializeField] private Rigidbody2D rb;
-    [SerializeField] private float TimePedal;
-    private float currentTime;
-   private float ForceAmount=10f;
-   private Vector2 forceDirect=new Vector2(0,1);
+    private float fallDelay = 0.1f;
+    private float destroyDelay = 2f;
+    [SerializeField] private Rigidbody2D rb;
+    private float defaultGravityScale;
 
-   void Timepedal()
-   {
-    if(currentTime<TimePedal)
+    private void OnCollisionEnter2D(Collision2D collision)
     {
-      currentTime+=Time.deltaTime;
+        if( collision.gameObject.GetComponent<Player>() != null)
+        {
+            StartCoroutine(Fall());
+        }
     }
-    else currentTime=0;
-   }
-   void LateUpdate()
-   {
-    
-   }
-   void OnCollisionEnter2D(Collision2D other)
-   {
-      if(other.gameObject.GetComponent<Player>())
-      {
-        if(currentTime==0)
-       { ani.SetBool("Isfalling", true);
-        rb.AddForce(force: ForceAmount*forceDirect, ForceMode2D.Force);
-       }
-       else
-       {
-         rb.velocity= new Vector2(rb.velocity.x, 0);
-       }
 
-      }
-   }
+    private IEnumerator Fall()
+    {
+        yield return new WaitForSeconds(fallDelay);
+        rb.bodyType = RigidbodyType2D.Dynamic;
+        defaultGravityScale= rb.gravityScale;
+        rb.gravityScale = 2;
+        Destroy(gameObject, destroyDelay);
+    }
 }

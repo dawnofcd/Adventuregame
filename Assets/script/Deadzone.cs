@@ -5,11 +5,12 @@ using UnityEngine.SceneManagement;
 
 public class Deadzone : MonoBehaviour
 {
-    public Transform retrans;
- void OnTriggerEnter2D(Collider2D other)
- {
-    other.gameObject.GetComponent<Player>().transform.position=retrans.position;
-    other.gameObject.GetComponent<Player>().CurrenHeath-=3;
-     
- }
+   private void OnTriggerEnter2D(Collider2D collision) 
+    {
+        if(collision.GetComponent<Player>() != null)
+        {
+              
+            PlayerManager.instance.OnFalling();
+        }  
+    }
 }

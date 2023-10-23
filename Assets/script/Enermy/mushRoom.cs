@@ -20,10 +20,7 @@ using UnityEngine;
     
    
 
-    protected override void CreateEnemyDeath()
-    {
-        base.CreateEnemyDeath();
-    }
+
 
 
   

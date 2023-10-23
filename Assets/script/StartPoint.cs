@@ -4,34 +4,35 @@ using UnityEngine;
 
 public class StartPoint: MonoBehaviour
 {
-    [SerializeField] private Animator anim;
-    private void Awake() {
+    [SerializeField] Transform resPoint;
+    Animator anim;
+    private void Awake() 
+    {
+    }
+
+    void Start()
+    {
+
         anim=GetComponent<Animator>();
+        PlayerManager.instance.spawnPoint = resPoint;
+        PlayerManager.instance.RespawnPlayer();
+
     }
 
-    void OnCollisionEnter2D(Collision2D other)
+    void OnTriggerEnter2D(Collider2D other)
     {
-        if(other.gameObject.GetComponent<Player>())
+        if(other.GetComponent<Player>())
         {
-             anim.SetBool("IsCollided", true);
+            if(other.transform.position.x > transform.position.x)
+            {
+                anim.SetTrigger("touch");
+            }
+
+            if(other.transform.position.x < transform.position.x)
+            {
+                anim.SetTrigger("touch");
+            }        
         }
     }
-
-     void OnCollisionStay2D(Collision2D other)
-    {
-        if(other.gameObject.GetComponent<Player>())
-        {
-             anim.SetBool("IsCollided", false);
-        }
-    }
-
-     void OnCollisionExit2D(Collision2D other)
-    {
-        if(other.gameObject.GetComponent<Player>())
-        {
-             anim.SetBool("IsCollided", false);
-        }
-    }
-
 
 }

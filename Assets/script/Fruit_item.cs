@@ -53,7 +53,7 @@ public class Fruit_item : MonoBehaviour
         
     if (other.gameObject.GetComponent<Player>())
      {
-       other.gameObject.GetComponent<Player>().CurrentHp+=10;
+      // other.gameObject.GetComponent<Player>().CurrentHp +=10;
         Destroy(this.gameObject);
      }
     }

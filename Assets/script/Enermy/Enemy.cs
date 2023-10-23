@@ -5,10 +5,13 @@ using UnityEngine;
 public class Enemy : Danger
 {
 
-   [SerializeField] protected Animator anim;
+    [SerializeField] protected Animator anim;
     protected Rigidbody2D rb;
+    [SerializeField]  protected int Damemage;
     protected int facingDirection = -1;
     [SerializeField] public float health;
+
+    public bool isdeath;
     [SerializeField] protected LayerMask whatIsGround;
     [SerializeField] protected LayerMask whatToIgnore;
     [SerializeField] protected float groundCheckDistance;
@@ -46,7 +49,9 @@ public class Enemy : Danger
     {
         anim = GetComponent<Animator>();
         rb = GetComponent<Rigidbody2D>();
+
         InvokeRepeating("FindPlayer",0 , .5f);
+        
         if (groundCheck == null)
            groundCheck = transform;
         if (wallCheck == null)
@@ -56,11 +61,12 @@ public class Enemy : Danger
 
     private void FindPlayer()
     {
-       if (player != null)
-           return;
+     if (player != null)
+            return;
 
-    //    if (PlayerCrl.instance.transform != null)
-    //        player = PlayerCrl.instance.transform;
+        if (PlayerManager.instance. currentPlayer != null)
+            player = PlayerManager.instance.currentPlayer.transform;
+          
     }
 
     protected virtual void walkAround()
@@ -88,8 +94,10 @@ public class Enemy : Danger
         if (!invicinble)
         {   
                 anim.SetBool("gotHit", true);
+        
             if(health <=0)
-            {
+            { 
+                isdeath=true;
                 anim.SetBool("gotHit", true);
                 canMove = false;
                 DestroyMe();
@@ -106,7 +114,7 @@ public class Enemy : Danger
 
     public virtual void  DestroyMe()
     {
-        Destroy(gameObject);
+        Destroy(gameObject,0.5f);
         CreateEnemyDeath();
     }
 

@@ -26,11 +26,11 @@ public class Plant : Enemy
 
 
 private void Update() {
-    Findplayer();
-    Autochangedir();
+    FindPlayer();
+    AutoChangeDir();
 }
 
-void Autochangedir()
+void AutoChangeDir()
 {
    
     if (Mathf.Approximately(this.transform.eulerAngles.y, 180f)) // phai kiem tra ky
@@ -44,11 +44,11 @@ if (Mathf.Approximately(this.transform.eulerAngles.y, 0f))
 
 }
 
-   void Findplayer()
+   void FindPlayer()
    {
-     bool playerdetect= Physics2D.Raycast(_origin.position,Vector2.right * _facing,_playercheckdis,layerMask: _whatIsplayer);
+     bool playerDetect= Physics2D.Raycast(_origin.position,Vector2.right * _facing,_playercheckdis,layerMask: _whatIsplayer);
 
-     if(playerdetect)
+     if(playerDetect)
      {
          SpawnBullet();
      }else
@@ -57,10 +57,7 @@ if (Mathf.Approximately(this.transform.eulerAngles.y, 0f))
      }
    }
    
-   private void OnDrawGizmos()
-   {
-      Gizmos.DrawLine(_origin.position,new Vector2(_origin.position.x+_playercheckdis*_facing,this.transform.position.y));
-   }
+   
     void SpawnBullet()
     {
         if (Time.time >= _nextSpawnTime)

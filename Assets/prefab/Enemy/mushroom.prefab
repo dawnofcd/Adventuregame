@@ -79,7 +79,7 @@ SpriteRenderer:
   m_AutoUVMaxAngle: 89
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: 1914342689
-  m_SortingLayer: 5
+  m_SortingLayer: 4
   m_SortingOrder: 0
   m_Sprite: {fileID: -6367560908665664636, guid: a6465882e447a7346b1d80709f6094be, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
@@ -125,7 +125,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c052bebcad8c4a345bd48e500991fdfb, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  anim: {fileID: 0}
+  Damemage: 0
   health: 3
+  isdeath: 0
   whatIsGround:
     serializedVersion: 2
     m_Bits: 64
@@ -136,6 +139,7 @@ MonoBehaviour:
   wallCheckDistance: 0.85
   groundCheck: {fileID: 1766730338280427797}
   wallCheck: {fileID: 1766730338904656023}
+  groundDetected: 0
   invicinble: 0
   speed: 4
   idleTime: 2

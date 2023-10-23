@@ -1,12 +1,6 @@
-using System.Security.Cryptography;
-using System.Collections;
+
 using System.Collections.Generic;
-using UnityEditor.Callbacks;
 using UnityEngine;
-using Unity.VisualScripting;
-
-
-
 
 public class bullet : MonoBehaviour
 {
@@ -42,7 +36,7 @@ public class bullet : MonoBehaviour
      {
       if(other.gameObject.GetComponent<Player>()!=null)
      { 
-      other.gameObject.GetComponent<Player>().TakeDame(50);
+       PlayerReceiver.instance.TakeDame(50);
        other.gameObject.GetComponent<Player>().KnockBack(transform);
      }
        CreatePiece();

@@ -10,6 +10,7 @@ TagManager:
   - enenmy
   - background
   - player
+  - Bullet
   layers:
   - Default
   - TransparentFX

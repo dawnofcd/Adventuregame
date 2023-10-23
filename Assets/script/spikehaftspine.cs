@@ -1,9 +1,9 @@
-﻿using System.Collections;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Spikehaftspine : Danger
-{   [SerializeField] public  int Damager=20;
+public class Spikehaftspine : MonoBehaviour
+{   
     [SerializeField] private float MaxSize;
     [SerializeField] private float MinSize;
     public float direction; // initial direction
@@ -19,7 +19,7 @@ public class Spikehaftspine : Danger
         transform.Rotate(0, 0, speed * direction * Time.deltaTime);
 
     }
-
+   
 
 
 }
