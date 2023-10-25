@@ -1,42 +1,35 @@
 using System.Collections;
 using System.Collections.Generic;
+using TMPro;
 using UnityEngine;
 
 
 public class Gamemanager : MonoBehaviour
 {
-    public static Gamemanager instance;
+     public static Gamemanager instance;
 
-      public int choosenSkinId;
+     public float timer;
 
-      public int levelNumber;
-   
-     public int difficulty;
+    public TextMeshProUGUI   timerText;
+    private bool endGame;
+
     private void Awake()
     {
         if (instance == null)
         {
            instance = this;
-            DontDestroyOnLoad(this);
-            
-        }
-        else
-        {
-             Destroy(this,.1f);
-        }
-       
+        }    
+
     }
 
 
 
-
-    private void Start()
+    void Update()
     {
-       if(difficulty == 0)
-            difficulty = PlayerPrefs.GetInt("GameDifficulty");
-
-        PlayerPrefs.GetFloat("Level" + levelNumber + "BestTime");
-
+        timer += Time.deltaTime; 
+        int roundedTimer = Mathf.RoundToInt(timer);
+        timerText.text = "Timer: " + roundedTimer.ToString() + "s";
     }
+
 
 }

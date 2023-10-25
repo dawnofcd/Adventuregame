@@ -84,7 +84,10 @@ public class Audiomanager : MonoBehaviour
       _gfx.PlayOneShot(Death);
    }
 
-  
+  public void PlayFinish()
+  {
+    _gfx.PlayOneShot(Finish);
+  }
 }
 
 

@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 
 
-public class Bullet : Danger
+public class Bullet :MonoBehaviour
 {
     private Rigidbody2D rb;
     [SerializeField] private GameObject pieces1Prefab;
@@ -32,15 +32,17 @@ public class Bullet : Danger
 
     }
 
-    protected override void OnTriggerEnter2D(Collider2D collision)
+     void OnTriggerEnter2D(Collider2D collision)
     {
         
-        base.OnTriggerEnter2D(collision);
-
-        CreatePieces1();
-        CreatePieces2();
-        Destroy(gameObject);
-
+       if( collision.GetComponent<Player>()!=null)
+       {
+         collision.GetComponent<Player>().KnockBack(transform);
+         PlayerReceiver.instance.TakeDame(50);
+       }
+         CreatePieces1();
+         CreatePieces2();
+         Destroy(gameObject);
     }
 
     private void CreatePieces1()

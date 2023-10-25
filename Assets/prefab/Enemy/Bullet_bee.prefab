@@ -9,7 +9,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1697816440304050497}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: Origin1
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -40,7 +40,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 2970773684331961506}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: Origin2
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -75,7 +75,7 @@ GameObject:
   - component: {fileID: 4438147005559674919}
   - component: {fileID: 6547640330287697648}
   - component: {fileID: 4128926070564227296}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: Bullet_bee
   m_TagString: Untagged
   m_Icon: {fileID: 0}

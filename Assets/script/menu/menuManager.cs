@@ -1,11 +1,11 @@
-using System.Collections;
-using System.Collections.Generic;
+
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 using PlayFab;
-using PlayFab.SharedModels;
 using PlayFab.ClientModels;
+using TMPro;
+using Unity.Android.Gradle.Manifest;
 
 public class menuManager : MonoBehaviour
 {
@@ -14,6 +14,13 @@ public class menuManager : MonoBehaviour
       GetPlayerName();   
     }
     [SerializeField] Text userNameDisplay;
+   
+    [SerializeField] private GameObject leaderboardEntryPrefab;
+    [SerializeField] private Transform leaderboardContent;
+     
+    [SerializeField] private GameObject layout;
+
+    private bool hasFetchedLeaderboard = false;
     public void SwitchMenuTo(GameObject uiMenu)
     {
         for (int i = 0; i < transform.childCount; i++)
@@ -57,11 +64,52 @@ public class menuManager : MonoBehaviour
     }
 
     // Hàm được gọi khi có lỗi xảy ra
+
+     public void GetLeaderBoardData()
+    {
+         if (!hasFetchedLeaderboard)
+    {
+        var request = new GetLeaderboardRequest
+        {
+            StatisticName = "Hights Score", 
+            StartPosition = 0,
+            MaxResultsCount = 10 // Số lượng người chơi hàng đầu bạn muốn hiển thị
+        };
+
+        PlayFabClientAPI.GetLeaderboard(request, OnLeaderboardDataReceived, OnError);
+    
+         hasFetchedLeaderboard = true;
+     }
+
+    }
+
+
+    private void OnLeaderboardDataReceived(GetLeaderboardResult result)
+    {
+       
+    
+        foreach (var player in result.Leaderboard)
+        {
+            GameObject leaderboardEntry = Instantiate(leaderboardEntryPrefab, leaderboardContent);
+            leaderboardEntry.transform.parent=layout.transform;
+            TextMeshProUGUI playerNameText = leaderboardEntry.transform.Find("PlayerName").GetComponent<TextMeshProUGUI>();
+            TextMeshProUGUI playerScoreText = leaderboardEntry.transform.Find("PlayerScore").GetComponent<TextMeshProUGUI>();
+            TextMeshProUGUI playerPlaceText = leaderboardEntry.transform.Find("playerPlaceText").GetComponent<TextMeshProUGUI>();
+            playerNameText.text = player.DisplayName.ToString();
+            playerScoreText.text = player.StatValue.ToString();
+            playerPlaceText.text=(player.Position+1).ToString();
+        }
+    
+    }
+
+    // Xử lý lỗi
     private void OnError(PlayFabError error)
     {
-        Debug.LogError("Error getting player profile: " + error.ErrorMessage);
+        Debug.LogError("PlayFab Error: " + error.ErrorMessage);
     }
 }
+
+
 
 
 

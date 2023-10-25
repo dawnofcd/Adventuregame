@@ -42,7 +42,7 @@ void Start()
     {
         Data = new Dictionary<string, string>
         {
-            {level,currentTotalStar.ToString()}
+            {level, currentTotalStar.ToString()}
         }
     };
     PlayFabClientAPI.UpdateUserData(request, OnUserDataUpdated, OnError);

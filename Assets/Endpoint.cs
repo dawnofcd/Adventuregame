@@ -27,7 +27,8 @@ public class Endpoint : MonoBehaviour
 
 IEnumerator Delay()
 {
-   yield return new WaitForSeconds(1f);
+
+   yield return new WaitForSeconds(.5f);
    UiEndmap.OnLevelFinished();
    Time.timeScale=0f;
      

@@ -1,10 +1,12 @@
-using System.Collections;
+
 using System.Collections.Generic;
 using UnityEngine;
 using TMPro;
 using UnityEngine.SceneManagement;
-using UnityEngine.UI;
-//using Unity.Services.CloudSave;
+using PlayFab;
+using PlayFab.ClientModels;
+
+
 
 
 public class InGame_Ui : VollumController
@@ -15,54 +17,59 @@ public class InGame_Ui : VollumController
     [Header("Menu Game obj")]
     [SerializeField] private GameObject inGameUI;
     [SerializeField] private GameObject pauseUI;
-    [SerializeField] private GameObject defeatUI;    
-    [SerializeField] private GameObject endLevelUI;  
+    [SerializeField] private GameObject defeatUI;
+    [SerializeField] private GameObject endLevelUI;
     [SerializeField] Animator transition;
-    public float  transitionTime = 1f;
 
-    
+
+
+
     //[Header("Controlls")]
     //[SerializeField] private VariableJoystick joystick;
     //[SerializeField] private Button jumpButton;
 
 
-    //[Header("Text Components")]
-    //[SerializeField] private TextMeshProUGUI  timerText;
-   // [SerializeField] private TextMeshProUGUI endTimerText;
-   // [SerializeField] private TextMeshProUGUI endBestTimeText;
-   // [SerializeField] private TextMeshProUGUI endCoinsText;
-    
+    [Header("Text Components")]
+    [SerializeField] private TextMeshProUGUI endTimerText;
+    [SerializeField] private TextMeshProUGUI endCoinsText;
+    [SerializeField] private TextMeshProUGUI scoreText;
+
+
+    private int HpScore;
+    private int timerScore;
+
+    public int score;
+
     //[Header("Volume")]
-   
-    protected  override void Awake()
+
+    protected override void Awake()
     {
         base.Awake();
-        if(PlayerManager.instance.inGameUI==null)
-       {
-          PlayerManager.instance.inGameUI = this;
-       }
-        
+        if (PlayerManager.instance.inGameUI == null)
+        {
+            PlayerManager.instance.inGameUI = this;
+        }
+
     }
-     void Start()
+    void Start()
     {
-       // PlayerManager.instance.levelNumber = SceneManager.GetActiveScene().buildIndex;
-        
-        Time.timeScale  = 1f;
+        // PlayerManager.instance.levelNumber = SceneManager.GetActiveScene().buildIndex;
+        Time.timeScale = 1f;
         SwitchUI(inGameUI);
     }
 
-   
 
-   private void Update() 
-   {
-        if(Input.GetKeyDown(KeyCode.Escape))
+
+    private void Update()
+    {
+        if (Input.GetKeyDown(KeyCode.Escape))
         {
-           CheckIfNotPause();
+            CheckIfNotPause();
         }
-   }
+    }
     public void AssignPlayerControlls(Player player)
     {
-       // player.joystick = joystick;
+        // player.joystick = joystick;
 
         // jumpButton.onClick.RemoveAllListeners();
         // jumpButton.onClick.AddListener(player.JumpButton);   
@@ -73,7 +80,7 @@ public class InGame_Ui : VollumController
 
     private bool CheckIfNotPause()
     {
-        if(!gamePause)
+        if (!gamePause)
         {
             gamePause = true;
             Time.timeScale = 0;
@@ -90,49 +97,28 @@ public class InGame_Ui : VollumController
 
     }
 
-    // private bool CheckIfNotDead()
-    // {
-    //     if(!gameDead)
-    //     {
-    //         gameDead = true;
-    //         Time.timeScale = 0;
-    //         SwitchUI(defeatUI);
-    //         return true;
-    //     }
-    //     else
-    //     {
-    //         gameDead = false;
-    //         Time.timeScale = 1;
-    //         SwitchUI(inGameUI);
-    //         return false;
-    //     }
-
-    // }
-
     public void OnDeath()
-    {  
-        
+    {
+
         SwitchUI(defeatUI);
-        Time.timeScale=0f;
+        Time.timeScale = 0f;
     }
 
     public void DisableDeath()
     {
-         SwitchUI(inGameUI);
-         Time.timeScale=1f;
+        SwitchUI(inGameUI);
+        Time.timeScale = 1f;
     }
 
     public void OnLevelFinished()
     {
-       // endCoinsText.text = "Coins: " + PlayerManager.instance.coins;
-        //endTimerText.text = "Your time: " + GameManager.instance.timer.ToString("00") +  " s";
-      //  endBestTimeText.text = "Best time: " + PlayerPrefs.GetFloat("Level" + GameManager.instance.levelNumber + "BestTime",999).ToString("00") + " s";
+        score = ScoreRate();
+        endCoinsText.text = "Coins: " + PlayerReceiver.instance.Coin;
+        endTimerText.text = "Your time: " + Gamemanager.instance.timer.ToString("00") + " s";
+        scoreText.text = "Score: " + score.ToString();
+        PlayerPrefs.SetInt("TotalScore", PlayerPrefs.GetInt("TotalScore") + score);
+        Audiomanager.instance.PlayFinish();
         SwitchUI(endLevelUI);
-    }
-    private void UpdateInGameInfo()
-    {
-        //timerText.text = "Timer: " + GameManager.instance.timer.ToString("00") + " s";
-        
     }
 
     public void SwitchUI(GameObject uiMenu)
@@ -144,7 +130,7 @@ public class InGame_Ui : VollumController
 
         uiMenu.SetActive(true);
 
-        if(uiMenu == inGameUI)
+        if (uiMenu == inGameUI)
         {
             // joystick.gameObject.SetActive(true);
             // jumpButton.gameObject.SetActive(true);
@@ -166,25 +152,88 @@ public class InGame_Ui : VollumController
 
     }
     public void LoadNextLevel(string level)
-    {
-       SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex + 1);
-       int NextSceneIndex=SceneManager.GetActiveScene().buildIndex;
-       LevelManager.instance.UpdateUnlockLevel(NextSceneIndex);
-       StarManager.instance.SendStarToServer(level);
-       PlayerReceiver.instance.UpCoinToServer();     
-        //transition.SetBool("transition",true);
+    {   
+        int totalScore = PlayerPrefs.GetInt("TotalScore");
+        SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex + 1);
+        int NextSceneIndex = SceneManager.GetActiveScene().buildIndex;
+        LevelManager.instance.UpdateUnlockLevel(NextSceneIndex);
+        StarManager.instance.SendStarToServer(level);
+        PlayerReceiver.instance.UpCoinToServer();
+        SendLeaderBoardScore(totalScore);
     }
 
-    protected override void Setgfxvolume(float value)
+    protected override void SetGfxVolume(float value)
     {
-        base.Setgfxvolume(value);
+        base.SetGfxVolume(value);
     }
 
 
 
-    protected override void Setmusicvolume(float value)
+    protected override void SetMusicVolume(float value)
     {
-        base.Setmusicvolume(value);
+        base.SetMusicVolume(value);
+    }
+
+
+
+    int ScoreRate()
+    {
+        int StarScore = PlayerReceiver.instance.Star * 100;
+        if (PlayerReceiver.instance.CurrenHeath < 3)
+        {
+            HpScore = 200;
+        }
+        if (PlayerReceiver.instance.CurrenHeath == 3)
+        {
+            HpScore = 300;
+        }
+
+        if (Gamemanager.instance.timer <= 30f)
+        {
+            timerScore = 1000;
+        }
+        else
+        {
+            timerScore = 200;
+        }
+
+       int  score = StarScore + HpScore + timerScore;
+       return score;
+    }
+
+    
+
+    public void ResetScore()
+    {
+        PlayerPrefs.SetInt("TotalScore",0);
+    }
+
+
+    public void SendLeaderBoardScore(int score)
+    {
+        var request = new UpdatePlayerStatisticsRequest
+        {
+            Statistics = new List<StatisticUpdate>
+            {
+                new StatisticUpdate
+                {
+                    StatisticName = "Hights Score", // Tên thống kê đã tạo
+                    Value = score
+                }
+            }
+        };
+
+        PlayFabClientAPI.UpdatePlayerStatistics(request, OnLeaderboardUpdated, OnError);
+    }
+
+    private void OnLeaderboardUpdated(UpdatePlayerStatisticsResult result)
+    {
+        Debug.Log("thanhcong");
+    }
+
+    private void OnError(PlayFabError error)
+    {
+        // Xử lý lỗi nếu có
     }
 
 }

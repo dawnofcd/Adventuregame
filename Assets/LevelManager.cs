@@ -113,11 +113,6 @@ public class LevelManager : MonoBehaviour
       buttonWithStar[i].StarRating(TotalStarLevel[i]);
       //PlayerPrefs.SetInt("star"+i, TotalStarLevel[i]);
     }
-    else
-    {
-
-      //PlayerPrefs.SetInt("star"+i, 0);
-    }
    }
   }
 
@@ -132,5 +127,9 @@ public class LevelManager : MonoBehaviour
     Audiomanager.instance.ButtonClick();
     SceneManager.LoadScene(Level);
   }
-
+  
+    public void ResetScore()
+    {
+        PlayerPrefs.SetInt("TotalScore",0);
+    }
 }

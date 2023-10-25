@@ -62,7 +62,7 @@ public class PlayerManager : MonoBehaviour
     {
         if(currentPlayer == null)
         {
-            //inGameUI.DisableDeath();
+            inGameUI.DisableDeath();
             currentPlayer =Instantiate(playerPrefab, spawnPoint.position, transform.rotation);
             Audiomanager.instance.PlayReSpawn();
             PlayerReceiver.instance.CurrenHeath=2;

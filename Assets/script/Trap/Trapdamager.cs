@@ -4,8 +4,8 @@ using UnityEngine;
 
 public class Trapdamager : MonoBehaviour
 {
-    [SerializeField] int Damager; 
-   private void  OnCollisionEnter2D(Collision2D other) 
+    [SerializeField] public int Damager; 
+   private  void  OnCollisionEnter2D(Collision2D other) 
    {
     
      if(other.gameObject.GetComponent<Player>()!=null)

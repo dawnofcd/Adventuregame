@@ -19,18 +19,18 @@ public class VollumController : MonoBehaviour
   protected virtual void Awake()
   {
 
-    Loadvollume();
-    _sliderGfx.onValueChanged.AddListener(Setmusicvolume);
-    _sliderMusic.onValueChanged.AddListener(Setgfxvolume);
+     Loadvollume();
+    _sliderGfx.onValueChanged.AddListener(SetMusicVolume);
+    _sliderMusic.onValueChanged.AddListener(SetGfxVolume);
   }
 
-  protected virtual void Setmusicvolume(float value)
+  protected virtual void SetMusicVolume(float value)
   {
     _mixer.SetFloat(name: MixserMusic, value: Mathf.Log10(value) * 20);
 
   }
 
-  protected virtual void Setgfxvolume(float value)
+  protected virtual void SetGfxVolume(float value)
   {
     _mixer.SetFloat(name: MixserGfx, value: Mathf.Log10(value) * 20);
 
@@ -55,11 +55,10 @@ public class VollumController : MonoBehaviour
 
 
 
-  public void Mutevolume()
+  public void MuteMusicVoLume()
   {
     _mixer.SetFloat(MixserMusic, -80f);
     _sliderMusic.value = 0f;
-
   }
 
   public void MuteGfx()
