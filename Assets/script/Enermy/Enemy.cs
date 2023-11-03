@@ -7,7 +7,7 @@ public class Enemy : Danger
 
     [SerializeField] protected Animator anim;
     protected Rigidbody2D rb;
-    [SerializeField]  protected int Damemage;
+    [SerializeField] protected int Damemage;
     protected int facingDirection = -1;
     [SerializeField] public float health;
 
@@ -19,13 +19,8 @@ public class Enemy : Danger
     [SerializeField] protected Transform groundCheck;
     [SerializeField] protected Transform wallCheck;
 
-    /// <summary>
-    /// Start is called on the frame when a script is enabled just before
-    /// any of the Update methods is called the first time.
-    /// </summary>
-
     protected bool wallDetected;
-    [SerializeField]protected bool groundDetected;
+    [SerializeField] protected bool groundDetected;
     protected RaycastHit2D playerDectection;
 
     protected Transform player;
@@ -50,23 +45,23 @@ public class Enemy : Danger
         anim = GetComponent<Animator>();
         rb = GetComponent<Rigidbody2D>();
 
-        InvokeRepeating("FindPlayer",0 , .5f);
-        
+        InvokeRepeating("FindPlayer", 0, .5f);
+
         if (groundCheck == null)
-           groundCheck = transform;
+            groundCheck = transform;
         if (wallCheck == null)
-           wallCheck = transform;
+            wallCheck = transform;
 
     }
 
     private void FindPlayer()
     {
-     if (player != null)
+        if (player != null)
             return;
 
-        if (PlayerManager.instance. currentPlayer != null)
+        if (PlayerManager.instance.currentPlayer != null)
             player = PlayerManager.instance.currentPlayer.transform;
-          
+
     }
 
     protected virtual void walkAround()
@@ -86,35 +81,35 @@ public class Enemy : Danger
             Flip();
         }
     }
-// không đụng thì là true, đụng là
+    // không đụng thì là true, đụng là
     public virtual void Damage()
     {
         health--;
 
         if (!invicinble)
-        {   
-                anim.SetBool("gotHit", true);
-        
-            if(health <=0)
-            { 
-                isdeath=true;
+        {
+            anim.SetBool("gotHit", true);
+
+            if (health <= 0)
+            {
+                isdeath = true;
                 anim.SetBool("gotHit", true);
                 canMove = false;
                 DestroyMe();
             }
         }
-       
+
     }
 
     private void StopHitAnimation()
     {
         anim.SetBool("gotHit", false);
-        
+
     }
 
-    public virtual void  DestroyMe()
+    public virtual void DestroyMe()
     {
-        Destroy(gameObject,0.5f);
+        Destroy(gameObject, 0.5f);
         CreateEnemyDeath();
     }
 
@@ -140,7 +135,7 @@ public class Enemy : Danger
         {
             Gizmos.DrawLine(wallCheck.position, new Vector2(wallCheck.position.x + wallCheckDistance * facingDirection, wallCheck.position.y));
             Gizmos.DrawLine(wallCheck.position, new Vector2(wallCheck.position.x + playerDectection.distance * facingDirection, wallCheck.position.y));
-                
+
         }
     }
 
@@ -152,6 +147,6 @@ public class Enemy : Danger
 
     }
 
-   
+
 
 }

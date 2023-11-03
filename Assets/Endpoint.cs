@@ -30,7 +30,6 @@ IEnumerator Delay()
 
    yield return new WaitForSeconds(.5f);
    UiEndmap.OnLevelFinished();
-   Time.timeScale=0f;
-     
+   Time.timeScale=0f;    
 }
 }

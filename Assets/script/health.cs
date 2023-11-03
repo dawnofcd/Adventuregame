@@ -8,7 +8,7 @@ public class health : MonoBehaviour
     {
         if(other.gameObject.GetComponent<Player>())
         {
-        other.gameObject.GetComponent<PlayerReceiver>().CurrenHeath+=1;
+            other.gameObject.GetComponent<PlayerReceiver>().CurrenHeath+=1;
             Destroy(this.gameObject);
         }
     }

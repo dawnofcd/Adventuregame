@@ -32,12 +32,11 @@ public class Bullet :MonoBehaviour
 
     }
 
-     void OnTriggerEnter2D(Collider2D collision)
+    void OnTriggerEnter2D(Collider2D other)
     {
-        
-       if( collision.GetComponent<Player>()!=null)
+        if(other.GetComponent<Player>()!=null)
        {
-         collision.GetComponent<Player>().KnockBack(transform);
+         other.GetComponent<Player>().KnockBack(transform);
          PlayerReceiver.instance.TakeDame(50);
        }
          CreatePieces1();

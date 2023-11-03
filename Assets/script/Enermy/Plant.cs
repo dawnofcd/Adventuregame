@@ -71,5 +71,13 @@ if (Mathf.Approximately(this.transform.eulerAngles.y, 0f))
     }
 
     }
+    protected override void  OnTriggerEnter2D(Collider2D other)  
+  {
+    base.OnTriggerEnter2D(other);
+    if (other.gameObject.GetComponent<Player>()!=null)
+    {   
+       PlayerReceiver.instance.TakeDame(Damemage);
+    }
+  }
    
 }

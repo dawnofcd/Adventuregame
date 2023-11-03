@@ -33,22 +33,6 @@ public class PlayerManager : MonoBehaviour
          PlayerReceiver.instance.CurrenHeath=0;
          PlayerReceiver.instance.CurrentHp=0;
 
-//        int difficulty = Gamemanager.instance.difficulty;
-        // if(HaveEnoughCoins())
-        // {
-        //     PearmanentDeath();
-        // }
-
-        // if(difficulty < 3)
-        // {
-
-        //     //if(difficulty >1)
-        //     //HaveEnoughCoins();
-        // }
-        // {
-        // else
-        // }
-
     }
 
   
@@ -64,6 +48,7 @@ public class PlayerManager : MonoBehaviour
         {
             inGameUI.DisableDeath();
             currentPlayer =Instantiate(playerPrefab, spawnPoint.position, transform.rotation);
+            inGameUI.AssignPlayerControlls(currentPlayer.GetComponent<Player>());
             Audiomanager.instance.PlayReSpawn();
             PlayerReceiver.instance.CurrenHeath=2;
             PlayerReceiver.instance.CurrentHp=100;

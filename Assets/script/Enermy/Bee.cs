@@ -85,8 +85,6 @@ public class Bee : Enemy
     {
         GameObject newBullet = Instantiate(bulletPrefab, bulletOrigin.transform.position, bulletOrigin.transform.rotation);
         newBullet.GetComponent<Bullet>().SetupSpeed(0, -bulletSpeed);
-
-
         speed = defaultSpeed;
         idleTimeCounter = idleTime;
         aggresive = false;

@@ -205,7 +205,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   moveSpeed: 7
-  jumpForce: 25
+  jumpForce: 20
   doubleJumpForce: 15.5
   wallJumpDirection: {x: 0, y: 20}
   movingInput: 0
@@ -224,7 +224,8 @@ MonoBehaviour:
   wallCheckDistance: 1.11
   enemyCheck: {fileID: 1330773966682613378}
   enemyCheckRadius: 0.4
-  testingOnPC: 1
+  testingOnPC: 0
+  joystick: {fileID: 0}
 --- !u!50 &1330773967089655508
 Rigidbody2D:
   serializedVersion: 4

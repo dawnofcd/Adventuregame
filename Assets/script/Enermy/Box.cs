@@ -36,11 +36,9 @@ public class Box : MonoBehaviour
             {
                 DestroyMe();
             }
-                
-
         }
     }
-    private void StopGotHitAnim()
+    public void StopGotHitAnim()
     {
         anim.SetBool("gotHit",  false);
     }

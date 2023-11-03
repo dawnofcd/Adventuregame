@@ -5,7 +5,6 @@ using UnityEngine.UI;
 using PlayFab;
 using PlayFab.ClientModels;
 using TMPro;
-using Unity.Android.Gradle.Manifest;
 
 public class menuManager : MonoBehaviour
 {

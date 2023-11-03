@@ -1,4 +1,4 @@
-﻿using System.Collections;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
@@ -6,8 +6,8 @@ using UnityEngine.UI;
 public class backgroundeffect : MonoBehaviour
 {
     [SerializeField] RawImage image;
-    [SerializeField] float _X , _Y;
-    
+    [SerializeField] float _X, _Y;
+
 
     void Update()
     {
@@ -16,7 +16,6 @@ public class backgroundeffect : MonoBehaviour
     void effect()
     {
         image.uvRect = new Rect(image.uvRect.position + new Vector2(_X, _Y) * Time.deltaTime, image.uvRect.size);
-    }      
-           
+    }
+
 }
- 

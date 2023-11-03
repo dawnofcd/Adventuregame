@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class Player : MonoBehaviour
 {
-   
+
     private Rigidbody2D rb;
     private Animator anim;
 
@@ -19,7 +19,7 @@ public class Player : MonoBehaviour
     private bool canDoubleJump = true;
     private bool canMove;
 
-    [SerializeField]private float movingInput;
+    [SerializeField] private float movingInput;
 
     [SerializeField] private float bufferJumpTime; //player trước khi chạm đất thì khi ấn nhảy sẽ nhảy (Nhảy đệm)
     private float bufferJumpCounter;
@@ -43,48 +43,46 @@ public class Player : MonoBehaviour
     [SerializeField] private float wallCheckDistance;
     [SerializeField] Transform enemyCheck;
     [SerializeField] private float enemyCheckRadius;
-   [SerializeField] public static bool isGrounded;
+    [SerializeField] public static bool isGrounded;
     public static bool isWallDetected;
     private bool canWallSlide;
     public static bool isWallSliding;
-
-
     private bool facingRight = true;
     private int facingDirection = 1;
 
-     //private bool canBeControlled;
-     [SerializeField] bool testingOnPC;
+    //private bool canBeControlled;
+    [SerializeField] bool testingOnPC;
+    public VariableJoystick joystick;
     float hInput;
     float vInput;
 
     private void Start()
-    {   
-        
+    {
+
         rb = GetComponent<Rigidbody2D>();
         anim = GetComponent<Animator>();
         defaultJumpForce = jumpForce;
- 
-      for(int i=0; i<anim.layerCount; i++)
-      { 
-        if(i==PlayerManager.choosenSkinId)
+
+        for (int i = 0; i < anim.layerCount; i++)
         {
-             anim.SetLayerWeight(i,1f);
+            if (i == PlayerManager.choosenSkinId)
+            {
+                anim.SetLayerWeight(i, 1f);
+            }
         }
-      }
 
     }
 
-   
+
 
 
     void Update()
     {
-    //    Hpbar.instance.UpdateHpbar(CurrentHp,MaxHp);
-    //    Playerreceivedam.instance.CaculatorHp(ref CurrenHeath,Maxheath,ref CurrentHp,MaxHp);
+
         AnimationControllers();
-        
+
         if (isKnocked)
-        {   
+        {
             return;
         }
 
@@ -92,19 +90,18 @@ public class Player : MonoBehaviour
         FlipController();
         CollisionChecks();
         InputChecks();
-
         CheckForEnemy();
-         CheckForBox();
+        CheckForBox();
 
         bufferJumpCounter -= Time.deltaTime;
         cayoteJumpCounter -= Time.deltaTime;
 
         if (isGrounded)
-        {    
+        {
 
             canDoubleJump = true;
             canMove = true;
-        
+
             if (bufferJumpCounter > 0)
             {
                 bufferJumpCounter = -1;
@@ -131,14 +128,11 @@ public class Player : MonoBehaviour
             rb.velocity = new Vector2(rb.velocity.x, rb.velocity.y * 0.6f);
         }
         Move();
-        
-    
-    }
- 
 
- 
- 
- 
+
+    }
+
+
     private void CheckForEnemy() //enemy
     {
         Collider2D[] hitedColliders = Physics2D.OverlapCircleAll(enemyCheck.position, enemyCheckRadius);
@@ -148,8 +142,8 @@ public class Player : MonoBehaviour
             if (enemy.GetComponent<Enemy>() != null)
             {
                 Enemy newEnemy = enemy.GetComponent<Enemy>();
-                 
-                  
+
+
                 if (newEnemy.invicinble)
                     return;
 
@@ -157,9 +151,9 @@ public class Player : MonoBehaviour
                 {
                     Audiomanager.instance.PlayKicked();
                     newEnemy.Damage();
-                    Jump();  
+                    Jump();
                 }
-              
+
             }
         }
     }
@@ -184,7 +178,7 @@ public class Player : MonoBehaviour
         anim.SetBool("isWallDetected", isWallDetected);
         anim.SetFloat("yVelocity", rb.velocity.y);
         anim.SetBool("isWallSliding", isWallSliding);
-       // anim.SetBool("canBeControled", canBeControlled);
+        // anim.SetBool("canBeControled", canBeControlled);
     }
 
 
@@ -193,7 +187,7 @@ public class Player : MonoBehaviour
         // if(!canBeControlled)
         //     return;
 
-        if(testingOnPC)
+        if (testingOnPC)
         {
             hInput = Input.GetAxisRaw("Horizontal");
             vInput = Input.GetAxisRaw("Vertical");
@@ -201,8 +195,8 @@ public class Player : MonoBehaviour
         }
         else
         {
-           // hInput = joystick.Horizontal;
-           // vInput = joystick.Vertical;
+            hInput = joystick.Horizontal;
+            vInput = joystick.Vertical;
         }
 
         //nhảy trên tường
@@ -217,7 +211,7 @@ public class Player : MonoBehaviour
         }
     }
 
-    private void JumpButton()//double jump
+    public void JumpButton()//double jump
     {
         Audiomanager.instance.PlayJumpSound();
         if (!isGrounded)
@@ -252,20 +246,15 @@ public class Player : MonoBehaviour
 
     public void KnockBack(Transform damageTransform) //bị dính dame
     {
-        if (!canBeKnocked) 
-        return;
-        // fruits --; // hết food thì chết
-        // if(fruits <0)
-        // {
-        //     Destroy(gameObject);
-        // }
+        if (!canBeKnocked)
+            return;
 
         // GetComponent<CameraShakeFx>().ScreenShake(-facingDirection);
-       
-        
+
+
         PlayerManager.instance.ScreenShake(-facingDirection);
         Audiomanager.instance.PlayKnocked();
-        isKnocked = true;  
+        isKnocked = true;
         canBeKnocked = false;
 
         #region Define horizontal direction for knockback
@@ -275,27 +264,27 @@ public class Player : MonoBehaviour
         else if (transform.position.x < damageTransform.position.x)
             hDirection = -1;
 
-        #endregion    
-        
+        #endregion
+
         rb.velocity = new Vector2(knockbackDirection.x * hDirection, knockbackDirection.y);
 
         Invoke("CancelKnockback", knockbackTime);
-         
+
         Invoke("AllowKnockback", knockbackProtectionTime);
-        
-        
+
+
     }
 
     private void CancelKnockback()
     {
         isKnocked = false;
-        
-        
+
+
     }
     private void AllowKnockback()
     {
         canBeKnocked = true;
-      
+
     }
 
     private void Move()//di chuyen
@@ -306,16 +295,16 @@ public class Player : MonoBehaviour
         }
     }
 
-     public void ReturnControll()
+    public void ReturnControll()
     {
-      //  rb.gravityScale = defaultGravityScale;
-       // canBeControlled =  true;
+        //  rb.gravityScale = defaultGravityScale;
+        // canBeControlled =  true;
     }
 
     private void WallJump() //nhảy tường
     {
         canMove = true;
-        anim.SetBool("isWallSliding", false);   
+        anim.SetBool("isWallSliding", false);
         Audiomanager.instance.PlayWallsilde();
         rb.velocity = new Vector2(wallJumpDirection.x * -facingDirection, wallJumpDirection.y);
     }
@@ -347,7 +336,7 @@ public class Player : MonoBehaviour
         {
             if (box.GetComponent<Box>() != null)
             {
-               Box newEnemy = box.GetComponent<Box>();
+                Box newEnemy = box.GetComponent<Box>();
 
                 if (newEnemy.invicinble)
                     return;
@@ -384,9 +373,9 @@ public class Player : MonoBehaviour
             // canDoubleJump = false;
         }
         if (!isWallDetected)
-       
-         {   
-        
+
+        {
+
             isWallSliding = false;
             canWallSlide = false;
         }

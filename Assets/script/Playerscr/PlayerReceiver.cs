@@ -14,46 +14,46 @@ public class PlayerReceiver : MonoBehaviour
     public int CurrentHp;
     public int CurrenHeath;
     public int Maxheath;
-    public  int Star;
-    public  int Coin;
+    public int Star;
+    public int Coin;
 
     public TextMeshProUGUI CoinUi;
-    [SerializeField] List<GameObject> heath= null;
+    [SerializeField] List<GameObject> heath = null;
     void Awake()
-    {    
-         instance=this;
-         heath.Add(GameObject.Find("uiheath_1"));
-         heath.Add(GameObject.Find("uiheath_2"));
-         heath.Add(GameObject.Find("uiheath_3")); 
+    {
+        instance = this;
+        heath.Add(GameObject.Find("uiheath_1"));
+        heath.Add(GameObject.Find("uiheath_2"));
+        heath.Add(GameObject.Find("uiheath_3"));
     }
-   
+
     private void Start()
-    {        
-            
-    }
-   public void CaculatorHp(ref int currentheath, int maxheath,ref int Hp, int maxhp)
     {
-       
+
+    }
+    public void CaculatorHp(ref int currentheath, int maxheath, ref int Hp, int maxhp)
+    {
+
         if (Hp < 0)
-    {
-        currentheath--;
-        Hp = maxhp;
-    }
-    else if (currentheath >= 3)
-    {
-        currentheath = maxheath;
-    }
-    else if (currentheath < 0)
-    {
-        Hp = 0;
+        {
+            currentheath--;
+            Hp = maxhp;
+        }
+        else if (currentheath >= 3)
+        {
+            currentheath = maxheath;
+        }
+        else if (currentheath < 0)
+        {
+            Hp = 0;
+        }
+
+        heathstate(currentheath);
     }
 
-    heathstate(  currentheath);
-    }
-
-   public  void heathstate(  int  heathClamp)
+    public void heathstate(int heathClamp)
     {
-        if (heathClamp==1)
+        if (heathClamp == 1)
         {
             this.heath[0].SetActive(true);
             this.heath[1].SetActive(false);
@@ -79,44 +79,45 @@ public class PlayerReceiver : MonoBehaviour
             this.heath[2].SetActive(false);
             PlayerManager.instance.OnFalling();
         }
-        
-    }   
-     public void TakeDame(int Damemager)
+
+    }
+    public void TakeDame(int Damemager)
     {
-        CurrentHp  -=Damemager;
-    } 
-    
-     public void CoinReceiver()
+        CurrentHp -= Damemager;
+    }
+
+    public void CoinReceiver()
     {
-        Coin+=1;
+        Coin += 1;
     }
 
     public void HeathReceiver()
     {
-        CurrenHeath+=1;
+        CurrenHeath += 1;
     }
-   private void  FixedUpdate()
-   {
-      CoinUi.text=Coin.ToString();
-      CaculatorHp(ref CurrenHeath,Maxheath, ref CurrentHp,MaxHp);
-      Hpbar.instance.UpdateHpBar(CurrentHp,MaxHp);
-   }
-
-  
-  public void UpCoinToServer() 
-  {
-        int CoinCurrent = 0;   
-        CoinCurrent += Coin;
-       var request = new UpdateUserDataRequest
+    private void FixedUpdate()
     {
-      Data = new Dictionary<string, string>
+        CoinUi.text = Coin.ToString();
+        CaculatorHp(ref CurrenHeath, Maxheath, ref CurrentHp, MaxHp);
+        Hpbar.instance.UpdateHpBar(CurrentHp, MaxHp);
+    }
+
+
+    public void UpCoinToServer()
+    {
+        int CoinCurrent = 0;
+        CoinCurrent += Coin;
+        var request = new UpdateUserDataRequest
+        {
+            Data = new Dictionary<string, string>
         {
             {"Currency",CoinCurrent.ToString()}
         }
-    };
+        
+        };
 
-    PlayFabClientAPI.UpdateUserData(request, OnUserDataUpdated, OnError);
-  }
+        PlayFabClientAPI.UpdateUserData(request, OnUserDataUpdated, OnError);
+    }
 
     private void OnError(PlayFabError error)
     {
@@ -125,6 +126,6 @@ public class PlayerReceiver : MonoBehaviour
 
     private void OnUserDataUpdated(UpdateUserDataResult result)
     {
-       // throw new NotImplementedException();
+        // throw new NotImplementedException();
     }
 }

@@ -184,11 +184,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c22b57dd6ad10084fbce69ffd8b6196c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  ValueY: 6.5
+  ValueY: 6.8
   ValueYExit: 0
   Time: 0.2
   TimeExit: 1
-  TimeDelay: 0.5
+  TimeDelay: 2
   TimeDelayExit: 0.5
 --- !u!114 &2387329124829727243
 MonoBehaviour:

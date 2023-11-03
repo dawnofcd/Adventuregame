@@ -4,8 +4,7 @@ using UnityEngine;
 
 public class Star : MonoBehaviour
 {
-    
-    [SerializeField] Animator anim;
+   [SerializeField] Animator anim;
    
    void Start()
    {

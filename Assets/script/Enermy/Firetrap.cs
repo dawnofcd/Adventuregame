@@ -24,16 +24,16 @@ public class Firetrap : MonoBehaviour
     if (timeBurn <= 5 && IsOn)
     {
       timeBurn += Time.deltaTime;
-      if (_timeDelayBurn<=2f) // chạm vào 2 s sau thì bật
+      if (_timeDelayBurn <= 2f) // chạm vào 2 s sau thì bật
       {
-        _timeDelayBurn+=Time.deltaTime;
+        _timeDelayBurn += Time.deltaTime;
         return;
       }
       else
-      { 
+      {
         anim.SetBool("On", true);
         IsDame = true;// bật lửa thì bật biến gây dame
-        _timeDelayBurn=0f;
+        _timeDelayBurn = 0f;
       }
     }
     else if (timeBurn > 5)
@@ -62,7 +62,7 @@ public class Firetrap : MonoBehaviour
     if (IsDame && other.gameObject.GetComponent<Player>())
     {
 
-     
+
       PlayerReceiver.instance.TakeDame(dameFire);
       other.gameObject.GetComponent<Player>().KnockBack(transform);
     }
@@ -81,7 +81,7 @@ public class Firetrap : MonoBehaviour
   void OnTriggerExit(Collider other)
   {
     anim.SetBool("isHit", false);
-   // IsDame = false; // nếu không chạm vào lửa thì k nhận dame
+    // IsDame = false; // nếu không chạm vào lửa thì k nhận dame
   }
 
 }

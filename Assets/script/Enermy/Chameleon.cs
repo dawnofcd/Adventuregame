@@ -55,4 +55,12 @@ public class Chameleon : Enemy
         anim.SetBool("gotHit", invicinble);
         anim.SetFloat("XVelocity", rb.velocity.x);
    }
+   protected override void  OnTriggerEnter2D(Collider2D other)  
+  {
+    base.OnTriggerEnter2D(other);
+    if (other.gameObject.GetComponent<Player>()!=null)
+    {   
+       PlayerReceiver.instance.TakeDame(Damemage);
+    }
+  }
 }

@@ -23,7 +23,7 @@ public class PiecePrefab : MonoBehaviour
             Random.Range(MinOffSet.x, MaxOffSet.x),
             Random.Range(MinOffSet.y, MaxOffSet.y)
         );
-        if(Time)
+        if (Time)
         {
             rb.AddForce(forcePieces, ForceMode2D.Impulse);
             Time = false;
@@ -31,16 +31,6 @@ public class PiecePrefab : MonoBehaviour
 
 
     }
-
-
-
-
-
-
-
-
-
-
 
 
 }

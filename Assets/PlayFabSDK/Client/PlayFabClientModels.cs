@@ -4941,6 +4941,9 @@ namespace PlayFab.ClientModels
         /// Specific value of the user's statistic.
         /// </summary>
         public int StatValue;
+
+        public string Value { get; set; }
+
     }
 
     [Serializable]

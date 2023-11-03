@@ -11,6 +11,7 @@ GameObject:
   - component: {fileID: 3853578208028937999}
   - component: {fileID: 2528922010135728330}
   - component: {fileID: 4509157648844862999}
+  - component: {fileID: 352824356801414051}
   m_Layer: 0
   m_Name: gamemanger
   m_TagString: Untagged
@@ -53,7 +54,6 @@ MonoBehaviour:
   shakeDirection: {x: 0, y: 0, z: 0}
   forceMultiplier: 0
   inGameUI: {fileID: 0}
-  levelNumber: 0
 --- !u!114 &4509157648844862999
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -107,3 +107,17 @@ MonoBehaviour:
     m_DissipationDistance: 100
     m_PropagationSpeed: 343
   m_DefaultVelocity: {x: 0, y: 0, z: 0}
+--- !u!114 &352824356801414051
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6021171945735329332}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 53d2d3c7acb5dd2429c5657ef9097590, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  timer: 0
+  timerText: {fileID: 0}

@@ -6,10 +6,10 @@ using UnityEngine.UI;
 
 public class QuitApplication : MonoBehaviour
 {
-   
-   public void  Quit()
-   {
-       Application.Quit();
-   }
-   
+
+    public void Quit()
+    {
+        Application.Quit();
+    }
+
 }

@@ -1,8 +1,6 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-
-
 public class ButtonWithStar : MonoBehaviour
 {
    public GameObject []star;

@@ -74,5 +74,16 @@ public class Rino : Enemy
         anim.SetBool("invincible", invicinble);
         anim.SetFloat("XVelocity", rb.velocity.x);
    }
+
+
+   protected override void  OnTriggerEnter2D(Collider2D other)  
+  {
+    base.OnTriggerEnter2D(other);
+    if (other.gameObject.GetComponent<Player>()!=null)
+    {   
+       PlayerReceiver.instance.TakeDame(Damemage);
+    }
+  }
+  
 }
     

@@ -5,9 +5,7 @@ using TMPro;
 using UnityEngine.SceneManagement;
 using PlayFab;
 using PlayFab.ClientModels;
-
-
-
+using UnityEngine.UI;
 
 public class InGame_Ui : VollumController
 {
@@ -19,14 +17,14 @@ public class InGame_Ui : VollumController
     [SerializeField] private GameObject pauseUI;
     [SerializeField] private GameObject defeatUI;
     [SerializeField] private GameObject endLevelUI;
-    [SerializeField] Animator transition;
+    
 
 
 
 
-    //[Header("Controlls")]
-    //[SerializeField] private VariableJoystick joystick;
-    //[SerializeField] private Button jumpButton;
+    [Header("Controlls")]
+    [SerializeField] private VariableJoystick joystick;
+    [SerializeField] private GameObject jumpButton;
 
 
     [Header("Text Components")]
@@ -40,7 +38,6 @@ public class InGame_Ui : VollumController
 
     public int score;
 
-    //[Header("Volume")]
 
     protected override void Awake()
     {
@@ -53,9 +50,13 @@ public class InGame_Ui : VollumController
     }
     void Start()
     {
+        
         // PlayerManager.instance.levelNumber = SceneManager.GetActiveScene().buildIndex;
         Time.timeScale = 1f;
         SwitchUI(inGameUI);
+      _sliderGfx.onValueChanged.AddListener(SetMusicVolume);
+      _sliderMusic.onValueChanged.AddListener(SetGfxVolume);
+
     }
 
 
@@ -69,8 +70,7 @@ public class InGame_Ui : VollumController
     }
     public void AssignPlayerControlls(Player player)
     {
-        // player.joystick = joystick;
-
+          player.joystick = joystick;
         // jumpButton.onClick.RemoveAllListeners();
         // jumpButton.onClick.AddListener(player.JumpButton);   
     }
@@ -114,7 +114,7 @@ public class InGame_Ui : VollumController
     {
         score = ScoreRate();
         endCoinsText.text = "Coins: " + PlayerReceiver.instance.Coin;
-        endTimerText.text = "Your time: " + Gamemanager.instance.timer.ToString("00") + " s";
+        endTimerText.text = "Your time: " + GameManagers.instance.timer.ToString("00") + " s";
         scoreText.text = "Score: " + score.ToString();
         PlayerPrefs.SetInt("TotalScore", PlayerPrefs.GetInt("TotalScore") + score);
         Audiomanager.instance.PlayFinish();
@@ -130,12 +130,13 @@ public class InGame_Ui : VollumController
 
         uiMenu.SetActive(true);
 
-        if (uiMenu == inGameUI)
+        
+       
+        if(uiMenu == inGameUI)
         {
-            // joystick.gameObject.SetActive(true);
-            // jumpButton.gameObject.SetActive(true);
+            joystick.gameObject.SetActive(true);
+            jumpButton.gameObject.SetActive(true);
         }
-
     }
 
     public void LoadMainMenu()
@@ -173,10 +174,15 @@ public class InGame_Ui : VollumController
     {
         base.SetMusicVolume(value);
     }
+   
+    public void SaveVollume()
+    {
+        PlayerPrefs.SetFloat(MixserMusic, _sliderMusic.value);
+        PlayerPrefs.SetFloat(MixserGfx, _sliderGfx.value);
+    }
 
 
-
-    int ScoreRate()
+    private int ScoreRate()
     {
         int StarScore = PlayerReceiver.instance.Star * 100;
         if (PlayerReceiver.instance.CurrenHeath < 3)
@@ -188,7 +194,7 @@ public class InGame_Ui : VollumController
             HpScore = 300;
         }
 
-        if (Gamemanager.instance.timer <= 30f)
+        if (GameManagers.instance.timer <= 30f)
         {
             timerScore = 1000;
         }
@@ -217,7 +223,7 @@ public class InGame_Ui : VollumController
             {
                 new StatisticUpdate
                 {
-                    StatisticName = "Hights Score", // Tên thống kê đã tạo
+                    StatisticName = "Hights Score", // Tên leaderboard
                     Value = score
                 }
             }
@@ -228,7 +234,7 @@ public class InGame_Ui : VollumController
 
     private void OnLeaderboardUpdated(UpdatePlayerStatisticsResult result)
     {
-        Debug.Log("thanhcong");
+        // xu li khi update thanh cong
     }
 
     private void OnError(PlayFabError error)
