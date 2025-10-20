@@ -22,10 +22,13 @@ Gameplay:
 <img width="2560" height="1440" alt="GameAdventure 20_10_2025 20_20_05" src="https://github.com/user-attachments/assets/6d14580a-f192-472b-b7df-8d6ae2b677dc" />
 +menupage:
 <img width="2560" height="1440" alt="GameAdventure 20_10_2025 20_33_27" src="https://github.com/user-attachments/assets/491b5702-def2-4eb6-8459-c85a169419c4" />
+
 +Character:
-<img width="2529" height="1428" alt="image" src="https://github.com/user-attachments/assets/c5a0fc5e-7f6d-4e56-a709-c85df60a6507" />
+<img width="2559" height="1439" alt="image" src="https://github.com/user-attachments/assets/402405ee-ce4c-4fa8-b1c5-0629cabd3d6d" />
+
 +leaderboard:
-<img width="2559" height="1402" alt="image" src="https://github.com/user-attachments/assets/490a857e-d069-438e-9251-4a2a8b272838" />
+<img width="2559" height="1380" alt="image" src="https://github.com/user-attachments/assets/388a2b63-6b8f-40b7-8785-57924af04193" />
+
 +level:
 <img width="2559" height="1439" alt="image" src="https://github.com/user-attachments/assets/65fef99c-79b2-4b73-ae35-3962d591bea9" />
 <img width="2559" height="1432" alt="image" src="https://github.com/user-attachments/assets/60baca0b-9e80-4d25-96db-fc18452e9428" />
